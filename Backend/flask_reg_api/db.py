@@ -1,35 +1,60 @@
-from decouple import config
+from flask import Flask, jsonify
 from flask_mysqldb import MySQL
-
-from flask import Flask
+from decouple import config
 
 app = Flask(__name__)
 
+app.config['MYSQL_HOST'] = config('MYSQL_HOST')
+app.config['MYSQL_USER'] = config('MYSQL_USER')
+app.config['MYSQL_PASSWORD'] = config('MYSQL_PASSWORD')
+app.config['MYSQL_DB'] = config('MYSQL_DB')
+
 mysql = MySQL(app)
 
-class Database:
-    def __init__(self):
-        self.connection = mysql.connect(
-            host=config('MYSQL_HOST'),
-            user=config('MYSQL_USER'),
-            password=config('MYSQL_PASSWORD'),
-            database=config('MYSQL_DB')
-        )
 
-    def create_table(self):
-        cursor = self.connection.cursor()
+def create_user_table():
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("SHOW TABLES LIKE 'users'")
+        result = cur.fetchone()
 
-        # Create the users table
-        cursor.execute("""CREATE TABLE IF NOT EXISTS users (
-            id INT NOT NULL AUTO_INCREMENT,
-            username VARCHAR(255) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,
-            PRIMARY KEY (id)
-        )""")
+        if not result:
+            # Create the users table
+            cur.execute("""CREATE TABLE IF NOT EXISTS users (
+                id INT NOT NULL AUTO_INCREMENT,
+                username VARCHAR(255) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                PRIMARY KEY (id)
+            )""")
+            mysql.connection.commit()
+            cur.close()
+        return jsonify({
+            "message":"User Table Created"
+        })
+    except Exception as e:
+        return jsonify({'message': str(e)})
 
-        self.connection.commit()
-        cursor.close()
 
-if __name__ == '__main__':
-    database = Database()
-    database.create_table()
+
+def create_product():
+    try:
+        # checking if table exists
+        cur = mysql.connection.cursor()
+        cur.execute("SHOW TABLES LIKE 'products'")
+        result = cur.fetchone()
+
+        if not result:
+            # Create the products table
+            cur.execute("""CREATE TABLE IF NOT EXISTS products (
+                id INT NOT NULL AUTO_INCREMENT,
+                name VARCHAR(255) NOT NULL,
+                price FLOAT NOT NULL,
+                PRIMARY KEY (id)
+            )""")
+            mysql.connection.commit()
+            cur.close()
+        return jsonify({'message': 'Product Table successfully'})
+
+    except Exception as e:
+        return jsonify({'message': str(e)})
+    
