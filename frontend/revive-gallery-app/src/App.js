@@ -1,5 +1,6 @@
 import LoginForm from "./components/loginform";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import RegistrationForm from "./components/registrationform";
 
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
       <Routes>
           <Route path="/" element={<LoginForm />} />
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegistrationForm />} />
       </Routes>   
     </Router>
     
