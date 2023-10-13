@@ -1,14 +1,14 @@
 from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
 import hashlib
-from decouple import config
+import os
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = config('MYSQL_HOST')
-app.config['MYSQL_USER'] = config('MYSQL_USER')
-app.config['MYSQL_PASSWORD'] = config('MYSQL_PASSWORD')
-app.config['MYSQL_DB'] = config('MYSQL_DB')
+app.config['MYSQL_HOST'] = "localhost"
+app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_PASSWORD'] = "12345678"
+app.config['MYSQL_DB'] = "bkd_db"
 
 mysql = MySQL(app)
 
