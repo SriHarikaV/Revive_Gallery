@@ -76,7 +76,7 @@ def products():
         return jsonify({'message': str(e)}), 500
 
 # category
-@app.route('/category/categories', methods=['POST'])
+@app.route('/categories/create', methods=['POST'])
 def create_category():
     try:
         # check if table exists
@@ -115,7 +115,7 @@ def create_category():
         return jsonify({'message': str(e)}), 500
     
 
-@app.route('/category/categories', methods=['GET'])
+@app.route('/categories', methods=['GET'])
 def categories():
     try:
         # Create a cursor to interact with the database
@@ -157,7 +157,7 @@ def create_product():
     
         # Get product data from the POST request
         name = request.json['name']
-        category = request.json['category']
+        category = request.json['category_id']
         price = request.json['price']
 
         # Validate the input (you can add more validation as needed)
