@@ -58,6 +58,68 @@ def register():
     
     except Exception as e:
         return jsonify({'message': str(e)}), 500
+    
+
+    # Login route
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        # Get user data from the POST request
+        email = request.json.get('email')
+        password = request.json.get('password')
+
+        if not email or not password:
+            return jsonify({'message': 'Email and password are required'}), 400
+
+        # Hash the provided password
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+        # Create a cursor to interact with the database
+        cur = mysql.connection.cursor()
+
+        # Query the database to find a user with the given email and password
+        cur.execute("SELECT * FROM users WHERE email = %s AND password = %s", (email, hashed_password))
+        user = cur.fetchone()
+
+        if user:
+            # User found, you can implement a session/token mechanism for authentication
+            return jsonify({'message': 'Login successful'}), 200
+        else:
+            return jsonify({'message': 'Invalid email or password'}), 401
+
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+
+@app.route('/fetch-products', methods=['GET'])
+def fetch_products():
+    try:
+        # Fetch all products based on category
+        category_id = request.args.get('category_id')
+
+        if not category_id:
+            return jsonify({'message': 'Category ID is required'}), 400
+
+        # Create a cursor to interact with the database
+        cur = mysql.connection.cursor()
+
+        # Query the database to fetch products for the given category_id
+        cur.execute("SELECT * FROM products WHERE category_id = %s", (category_id,))
+        products = cur.fetchall()
+
+        product_list = []
+        for product in products:
+            product_dict = {
+                'product_id': product[0],
+                'product_name': product[1],
+                'price': float(product[2]),
+                'category_id': product[3]
+            }
+            product_list.append(product_dict)
+
+        return jsonify({'products': product_list}), 200
+
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
 
 @app.route('/products', methods=['GET'])
 def products():
@@ -90,7 +152,8 @@ def create_category():
                 id INT NOT NULL AUTO_INCREMENT,
                 name VARCHAR(255) NOT NULL,
                 PRIMARY KEY (id)
-            )""")
+            )AUTO_INCREMENT = 101
+            """)
             mysql.connection.commit()
             cur.close()
 
@@ -144,11 +207,11 @@ def create_product():
         if not result:
             # Create the products table
             cur.execute("""CREATE TABLE IF NOT EXISTS products (
-                id INT NOT NULL AUTO_INCREMENT,
-                name VARCHAR(255) NOT NULL,
+                product_id INT NOT NULL AUTO_INCREMENT,
+                product_name VARCHAR(255) NOT NULL,
                 category_id INT NOT NULL,
                 price FLOAT NOT NULL,
-                PRIMARY KEY (id),
+                PRIMARY KEY (product_id),
                 FOREIGN KEY (category_id) REFERENCES categories(id)
             )""")
             mysql.connection.commit()
@@ -156,8 +219,8 @@ def create_product():
 
     
         # Get product data from the POST request
-        name = request.json['name']
-        category = request.json['category']
+        name = request.json['product_name']
+        category = request.json['category_id']
         price = request.json['price']
 
         # Validate the input (you can add more validation as needed)
@@ -168,7 +231,7 @@ def create_product():
         cur = mysql.connection.cursor()
 
         # Insert the new product into the database
-        cur.execute("INSERT INTO products (name, category_id, price) VALUES (%s, %s, %s)", (name, category, price))
+        cur.execute("INSERT INTO products (product_name, category_id, price) VALUES (%s, %s, %s)", (name, category, price))
         mysql.connection.commit()
         cur.close()
 
