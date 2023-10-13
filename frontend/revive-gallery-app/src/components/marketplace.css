@@ -1,0 +1,27 @@
+  
+  /* Marketplace.css */
+  .product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .product-item {
+    width: 300px;
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+  
+  .product-item h2 {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .product-item p {
+    margin-top: 10px;
+    color: #777;
+  }
+  
