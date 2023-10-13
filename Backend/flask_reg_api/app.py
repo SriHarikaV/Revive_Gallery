@@ -24,45 +24,40 @@ def register():
             # Create the users table
             cur.execute("""CREATE TABLE IF NOT EXISTS users (
                 id INT NOT NULL AUTO_INCREMENT,
-                username VARCHAR(255) NOT NULL UNIQUE,
+                email VARCHAR(255) NOT NULL,
+                first_name VARCHAR(255) NOT NULL,
+                last_name VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 PRIMARY KEY (id)
             )""")
             mysql.connection.commit()
             cur.close()
 
-            
         # Get user data from the POST request
-        username = request.json['username']
+        email = request.json['email']
+        first_name = request.json['first_name']
+        last_name = request.json['last_name']
         password = request.json['password']
 
         # Validate the input (you can add more validation as needed)
-        if not username or not password:
-            return jsonify({'message': 'Username and password are required'}), 400
-
-        # Hash the password using hashlib
+        if not email or not first_name or not last_name or not password:
+            return jsonify({'message': 'All fields are required'}), 400
+        
+        # Hash the password
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
         # Create a cursor to interact with the database
         cur = mysql.connection.cursor()
 
-        # Check if the username is already in use
-        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-        user = cur.fetchone()
-
-        if user:
-            return jsonify({'message': 'Username already exists'}), 400
-
         # Insert the new user into the database
-        cur.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
+        cur.execute("INSERT INTO users (email, first_name, last_name, password) VALUES (%s, %s, %s, %s)", (email, first_name, last_name, hashed_password))
         mysql.connection.commit()
         cur.close()
 
-        return jsonify({'message': 'Registration successful'}), 201
-
+        return jsonify({'message': 'User created successfully'}), 201
+    
     except Exception as e:
         return jsonify({'message': str(e)}), 500
-
 
 @app.route('/products', methods=['GET'])
 def products():
@@ -80,6 +75,63 @@ def products():
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
+# category
+@app.route('/category/categories', methods=['POST'])
+def create_category():
+    try:
+        # check if table exists
+        cur = mysql.connection.cursor()
+        cur.execute("SHOW TABLES LIKE 'categories'")
+        result = cur.fetchone()
+
+        if not result:
+            # Create the categories table
+            cur.execute("""CREATE TABLE IF NOT EXISTS categories (
+                id INT NOT NULL AUTO_INCREMENT,
+                name VARCHAR(255) NOT NULL,
+                PRIMARY KEY (id)
+            )""")
+            mysql.connection.commit()
+            cur.close()
+
+        # Get category data from the POST request
+        name = request.json['name']
+
+        # Validate the input (you can add more validation as needed)
+        if not name:
+            return jsonify({'message': 'Name is required'}), 400
+
+        # Create a cursor to interact with the database
+        cur = mysql.connection.cursor()
+
+        # Insert the new category into the database
+        cur.execute("INSERT INTO categories (name) VALUES (%s)", (name,))
+        mysql.connection.commit()
+        cur.close()
+
+        return jsonify({'message': 'Category created successfully'}), 201
+
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+    
+
+@app.route('/category/categories', methods=['GET'])
+def categories():
+    try:
+        # Create a cursor to interact with the database
+        cur = mysql.connection.cursor()
+
+        # Get all categories from the database
+        cur.execute("SELECT * FROM categories")
+        categories = cur.fetchall()
+        cur.close()
+
+        return jsonify(categories), 200
+
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+    
+
 
 @app.route('/products/create', methods=['POST'])
 def create_product():
@@ -94,8 +146,10 @@ def create_product():
             cur.execute("""CREATE TABLE IF NOT EXISTS products (
                 id INT NOT NULL AUTO_INCREMENT,
                 name VARCHAR(255) NOT NULL,
+                category_id INT NOT NULL,
                 price FLOAT NOT NULL,
-                PRIMARY KEY (id)
+                PRIMARY KEY (id),
+                FOREIGN KEY (category_id) REFERENCES categories(id)
             )""")
             mysql.connection.commit()
             cur.close()
@@ -103,25 +157,25 @@ def create_product():
     
         # Get product data from the POST request
         name = request.json['name']
+        category = request.json['category']
         price = request.json['price']
 
         # Validate the input (you can add more validation as needed)
-        if not name or not price:
-            return jsonify({'message': 'Name and price are required'}), 400
-
+        if not name or not category or not price:
+            return jsonify({'message': 'All fields are required'}), 400
+        
         # Create a cursor to interact with the database
         cur = mysql.connection.cursor()
 
         # Insert the new product into the database
-        cur.execute("INSERT INTO products (name, price) VALUES (%s, %s)", (name, price))
+        cur.execute("INSERT INTO products (name, category_id, price) VALUES (%s, %s, %s)", (name, category, price))
         mysql.connection.commit()
         cur.close()
 
         return jsonify({'message': 'Product created successfully'}), 201
-
+    
     except Exception as e:
         return jsonify({'message': str(e)}), 500
-    
     
 if __name__ == '__main__':
     app.run(debug=True)
