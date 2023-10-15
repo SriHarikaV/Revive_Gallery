@@ -11,7 +11,7 @@ const LoginForm = () => {
     const [popupStyle, showPopup] = useState("hide");
     const [popupMessage, setPopupMessage] = useState("");
 
-    const popup = (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         // Send the login data to the backend API
         fetch("http://localhost:5000/login", {
@@ -52,7 +52,7 @@ const LoginForm = () => {
                     <h1>Login</h1>
                     <p>Please enter your credentials to login!</p>
                     <hr />
-                    <form onSubmit={popup}>
+                    <form onSubmit={handleSubmit}>
                         <div className="form-group mb-3">
                             <input
                                 type="email"

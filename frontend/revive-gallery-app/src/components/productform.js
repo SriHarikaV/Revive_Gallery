@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "./productform.css"
 
 function ProductForm() {
   const [product, setProduct] = useState({
@@ -18,12 +19,31 @@ function ProductForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+        // Send the product data to the backend API
+        fetch("http://localhost:5000/product/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(product),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    console.log("success")
+                    console.log('Form Data:', product);
+                } else {
+                    console.log("bad response");
+                }
+            })
+            .catch((error) => {
+                console.log("error");
+            });
     
-    console.log('Form Data:', product);
   };
 
   return (
-    <div>
+    <div className="ProductForm">
       <h2>Add a New Product</h2>
       <form onSubmit={handleSubmit}>
         <div>

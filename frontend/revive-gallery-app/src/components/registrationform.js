@@ -15,7 +15,7 @@ const RegistrationForm = () => {
     const [popupStyle, showPopup] = useState("hide");
     const [popupMessage, setPopupMessage] = useState("");
 
-    const popup = (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         // Send the data to the backend API
         fetch("http://localhost:5000/register", {
@@ -60,7 +60,7 @@ const RegistrationForm = () => {
                     <h1>Sign Up</h1>
                     <p>Please fill in this form to create an account!</p>
                     <hr />
-                    <form onSubmit={popup}>
+                    <form onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="form-group mb-3 col-6">
                                 <input

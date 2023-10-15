@@ -1,6 +1,7 @@
-import LoginForm from "./components/loginform";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginForm from "./components/loginform";
 import RegistrationForm from "./components/registrationform";
+import ProductForm from "./components/productform";
 import Marketplace from "./components/marketplace";
 
 
@@ -12,11 +13,8 @@ function App() {
           <Route path="/" element={<LoginForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
-<<<<<<< HEAD
           <Route path="/mp" element={<Marketplace />} />
-=======
-          <Route path="/add" element={<RegistrationForm />} />
->>>>>>> MP-7UI--create-the-registration-form
+          <Route path="/add" element={<ProductForm />} />
       </Routes>   
     </Router>
     
