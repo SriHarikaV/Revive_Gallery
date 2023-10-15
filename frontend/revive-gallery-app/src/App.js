@@ -12,7 +12,11 @@ function App() {
           <Route path="/" element={<LoginForm />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
+<<<<<<< HEAD
           <Route path="/mp" element={<Marketplace />} />
+=======
+          <Route path="/add" element={<RegistrationForm />} />
+>>>>>>> MP-7UI--create-the-registration-form
       </Routes>   
     </Router>
     
