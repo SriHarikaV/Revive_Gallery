@@ -1,77 +1,49 @@
-*{
-    margin: 0;
-    box-sizing: border-box;
-}
-
-.page {
+.register_page {
+    background-color: #3897DD;
+    width: 100vw;
     height: 100vh;
-    width: 100%;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
-.cover {
-    background-color: white;
-    width: 30em;
-    height: 35em;
-    position: relative;
-    border-radius: 1em;
-    box-shadow: 0 0.188em 1.550em rgb(156, 156,156);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
-
-input {
+.signup_btn {
+    background-color: #3897DD;
+    color: #fff;
     border: none;
-    background-color: rgb(229,226,226);
-    height: 4em;
-    width: 80%;
-    border-radius: 0.25em;
-    text-align: center;
-    padding: 2em;
-}
-
-input:focus {
-    outline-color: rgb(32,177,255);
-}
-
-.login-btn {
-    width: 40%;
-    height: 3em;
-    background-color: rgb(32,177,255);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.5s;
-    border-radius: 0.25em;
+    border-radius: 2px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
     cursor: pointer;
-
+    transition: all 0.3s ease-in-out;
 }
 
-.login-btn:hover { transform: scale(1.25);}
-
-.hide {
-    position: absolute;
-    transform: scale(0);
+.signup_btn:hover {
+    background-color: #fff;
+    color: #3897DD;
 }
 
-.login-popup {
-    position: absolute;
-    height: 30em;
-    width: 30em;
+.form-group input[type="text"], .form-group input[type="password"], .form-group input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    background-color: rgb(238, 238, 238);
+}
+
+.have_account {
+    color: #fff;
+    font-size: 1.2rem;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    border-radius: 0.25em;
-    background-color: black;
-    color: white;
-    bottom: 0;
-    transform: scale(1);
-    transition: 1.5s;
+    align-items: center;
 }
 
+.have_account a {
+    color: #fff;
+    text-decoration: underline;
+    margin-left: 5px;
+    font-weight: bold;
+}

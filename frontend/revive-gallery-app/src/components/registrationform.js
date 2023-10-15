@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import "./loginform.css";
+import { Link } from "react-router-dom";
 
 const RegistrationForm = () => {
     const [registration, setRegistration] = useState({
         first_name: '',
         last_name: '',
-        username: '',
         email: '',
-        password: ''
+        password: '',
+        confirmPassword: '',
+        acceptedTerms: false,
     });
 
     const [popupStyle, showPopup] = useState("hide");
+    const [popupMessage, setPopupMessage] = useState("");
 
-    const popup = () => {
+    const popup = (event) => {
+        event.preventDefault();
         // Send the data to the backend API
         fetch("http://localhost:5000/register", {
             method: "POST",
@@ -24,64 +28,127 @@ const RegistrationForm = () => {
             .then((response) => {
                 if (response.ok) {
                     showPopup("signup-popup");
-                    setTimeout(() => showPopup("hide"), 3000);
+                    setPopupMessage("Registration successful!");
+                    setTimeout(() => {
+                        showPopup("hide");
+                        setPopupMessage("");
+                    }, 3000);
                 } else {
-                    // error
+                    showPopup("signup-popup");
+                    setPopupMessage("Registration failed. Please try again.");
                 }
             })
             .catch((error) => {
-                // error 
+                showPopup("signup-popup");
+                setPopupMessage("Error: " + error.message);
             });
     };
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setRegistration({
-            ...registration,
-            [name]: value,
-        });
+        const { name, value, type, checked } = e.target;
+        if (type === "checkbox") {
+            setRegistration({ ...registration, [name]: checked });
+        } else {
+            setRegistration({ ...registration, [name]: value });
+        }
     };
 
     return (
-        <div className="cover">
-            <h1>Sign Up</h1>
-            <input
-                type="text"
-                name="first_name"
-                value={registration['first_name']}
-                placeholder="first name"
-                onChange={handleInputChange}
-            />
-            <input
-                type="text"
-                name="last_name"
-                value={registration['last_name']}
-                placeholder="last name"
-                onChange={handleInputChange}
-            />
-            <input
-                type="text"
-                name="username"
-                value={registration['username']}
-                placeholder="username"
-                onChange={handleInputChange}
-            />
-            <input
-                type="email"
-                name="email"
-                value={registration['email']}
-                placeholder="email id"
-                onChange={handleInputChange}
-            />
-            <input
-                type="password"
-                name="password"
-                value={registration['password']}
-                placeholder="password"
-                onChange={handleInputChange}
-            />
-            <div className="login-btn" onClick={popup}>
-                Sign Up
+        <div className="register_page row">
+            <div className="col-8">
+                <div className="card register_form_card p-5">
+                    <h1>Sign Up</h1>
+                    <p>Please fill in this form to create an account!</p>
+                    <hr />
+                    <form onSubmit={popup}>
+                        <div className="row">
+                            <div className="form-group mb-3 col-6">
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    name="first_name"
+                                    placeholder="First Name"
+                                    value={registration.first_name}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <div className="form-group mb-3 col-6">
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    name="last_name"
+                                    placeholder="Last Name"
+                                    value={registration.last_name}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="form-group mb-3">
+                            <input
+                                type="email"
+                                name="email"
+                                className="form-control"
+                                placeholder="Email"
+                                value={registration.email}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                        <div className="form-group mb-3">
+                            <input
+                                type="password"
+                                name="password"
+                                className="form-control"
+                                placeholder="Password"
+                                value={registration.password}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                        <div className="form-group mb-3">
+                            <input
+                                type="password"
+                                name="confirmPassword"
+                                className="form-control"
+                                placeholder="Confirm Password"
+                                value={registration.confirmPassword}
+                                onChange={handleInputChange}
+                            />
+                        </div>
+
+                        <div className="form-group mb-3">
+                            <input
+                                type="checkbox"
+                                name="acceptedTerms"
+                                className="form-check-input"
+                                checked={registration.acceptedTerms}
+                                onChange={handleInputChange}
+                            />
+                            <label className="form-check-label">
+                                I accept the
+                                <Link to="/terms"> Terms of Use</Link> &{" "}
+                                <Link to="/privacy">Privacy Policy</Link>
+                            </label>
+                        </div>
+
+                        <div className="form-group mb-3">
+                            <button
+                                className="btn signup_btn text-white"
+                                type="submit"
+                                style={{ backgroundColor: "#3897DD" }}
+                            >
+                                Sign Up
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div className="p-5 have_account">
+                    <p>
+                        Already have an account? <Link to="/login">Login</Link>
+                    </p>
+                </div>
             </div>
         </div>
     );
