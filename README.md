@@ -1,5 +1,6 @@
 
 # Revive_Gallery
+
 Our software project is an innovative online marketplace named ReviveGallery designed for buying and selling second-hand goods. 
 
 The novel feature of our software is the introduction of a unique trustworthiness scoring system that evaluates each user's credibility based on their history of completed transactions and the feedback and reviews from the buyers. Sellers who achieve high trustworthiness scores gain access to advanced features, including online delivery services and the ability to accept online payments.
@@ -18,4 +19,9 @@ This project requires the following installations to be installed React js for w
     This command will start a development server, and will notice that the output indicating that the application is running.
     Open web browser and go to http://localhost:3000. You will see the "Login" page, which is the LoginForm component.
 
-
+To run the backend application, please install the below packages and goto the backend directory and give the command to run: python -m flask --app .\app.py run
+pip install mysql-connector-python
+pip install bcrypt
+pip install flask
+Use postman to check the APi's
+below are the methods we used so far:
