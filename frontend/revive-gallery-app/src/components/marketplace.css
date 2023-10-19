@@ -1,9 +1,11 @@
   
   /* Marketplace.css */
-  .product-list {
-    display: flex;
+  .product-table {
+    /* display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-around; */
+    width: 100%;
+  margin: 0 auto;
   }
   
   .product-item {

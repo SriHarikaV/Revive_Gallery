@@ -17,18 +17,41 @@ const Marketplace = () => {
   //     .catch((error) => console.error("Error fetching products:", error));
   // }, []);
 
+  // return (
+  //   <div>
+  //     <h1>Marketplace</h1>
+  //     <div className="product-table">
+  //       {products.map((product) => (
+  //         <div key={product.id} className="product-item">
+  //           <h2>{product.name}</h2>
+  //           <p>{product.description}</p>
+  //           <p>Price: ${product.price}</p>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   </div>
+  // );
   return (
     <div>
       <h1>Marketplace</h1>
-      <div className="product-list">
-        {products.map((product) => (
-          <div key={product.id} className="product-item">
-            <h2>{product.name}</h2>
-            <p>{product.description}</p>
-            <p>Price: ${product.price}</p>
-          </div>
-        ))}
-      </div>
+      <table className="product-table">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((product) => (
+            <tr key={product.id}>
+              <td>{product.name}</td>
+              <td>{product.description}</td>
+              <td>${product.price}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
