@@ -7,6 +7,6 @@ jobs:
     steps:
       - checkout  # Check out your source code
       - run:
-          name: Print Hello, World  # testing the setup
+          name: Print Hello, UNIV  # testing the setup
           command: echo "Hello, World"
           
