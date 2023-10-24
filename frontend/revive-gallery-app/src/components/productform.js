@@ -67,6 +67,7 @@ function ProductForm() {
     <div className="ProductForm">
       <h2>Add a New Product</h2>
       <form onSubmit={handleSubmit}>
+        
         <div className="form-group">
           <label htmlFor="name">Product Name:</label>
           <input
@@ -78,6 +79,7 @@ function ProductForm() {
             className="form-control"
           />
         </div>
+
         <div className="form-group">
           <label htmlFor="description">Description:</label>
           <textarea
@@ -88,6 +90,7 @@ function ProductForm() {
             className="form-control"
           />
         </div>
+
         <div className="form-group">
           <label htmlFor="categories">Categories:</label>
           <select
@@ -103,6 +106,7 @@ function ProductForm() {
             <option value="Books">Books</option>
           </select>
         </div>
+
         <div className="form-group">
           <label htmlFor="price">Price:</label>
           <input
@@ -114,6 +118,7 @@ function ProductForm() {
             className="form-control"
           />
         </div>
+
         <div className="form-group">
           <label htmlFor="images">Product Images:</label>
           <input
@@ -125,11 +130,13 @@ function ProductForm() {
             className="form-control"
           />
         </div>
+
         <div className="form-group">
           <button type="submit" className="btn btn-primary">
             Add Product
           </button>
         </div>
+
       </form>
     </div>
   );

@@ -1,21 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate   } from "react-router-dom";
 import "./loginform.css";
 
 const LoginForm = () => {
+    const navigate=useNavigate();
+    // const history = useHistory();
     const [credentials, setCredentials] = useState({
         email: "",
         password: "",
     });
 
-    const [popupStyle, showPopup] = useState("hide");
-    const [popupMessage, setPopupMessage] = useState("");
-
     const handleSubmit = (event) => {
+        console.log(credentials)
         event.preventDefault();
         // Send the login data to the backend API
         fetch("http://localhost:5000/login", {
             method: "POST",
+            // mode: 'no-cors',
             headers: {
                 "Content-Type": "application/json",
             },
@@ -23,20 +24,15 @@ const LoginForm = () => {
         })
             .then((response) => {
                 if (response.ok) {
-                    showPopup("login-popup");
-                    setPopupMessage("Login successful!");
-                    setTimeout(() => {
-                        showPopup("hide");
-                        setPopupMessage("");
-                    }, 3000);
+                    console.log('login ok')
+                    navigate('/');
+                    // history.push('/');
                 } else {
-                    showPopup("login-popup");
-                    setPopupMessage("Login failed. Please check your credentials.");
+                    console.log("Login failed. Please check your credentials.");
                 }
             })
             .catch((error) => {
-                showPopup("login-popup");
-                setPopupMessage("Error: " + error.message);
+                console.log("Error: " + error.message);
             });
     };
 

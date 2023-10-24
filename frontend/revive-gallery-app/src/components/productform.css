@@ -54,17 +54,35 @@
   background-color: #0056b3;
 }
 
-/* Add more styles as needed */
-
 /* Custom styling for multi-select dropdown */
 .ProductForm select[multiple] {
   height: auto;
+} 
+
+.ProductForm select[multiple] option {
+  border-bottom: 1px solid #acc3dd;
+  cursor: pointer;
+}
+
+.ProductForm select[multiple] option:hover {
+  background-color: #cfdcf5;
+}
+
+.ProductForm select[multiple] option.selected {
+  background-color: #007bff;
+  color: white;
 }
 
 /* Custom styling for file input */
 .ProductForm input[type="file"] {
   border: none;
   padding: 5px 10px;
+}
+
+/* Custom styling for text input */
+.ProductForm input[type="text"] {
+  background-color: #fff;
+
 }
 
 /* Responsive styles for smaller screens (optional) */
