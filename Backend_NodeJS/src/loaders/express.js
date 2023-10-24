@@ -6,6 +6,10 @@ import helmet from "helmet";
 import { prefix } from "./../config/index.js";
 import routes from "./../api/routes/index.js";
 import bodyParser from "body-parser";
+import stripe from "stripe";
+const stripeObj = stripe(
+  "sk_test_51MC7O1SALYbO5cv1vrObjkSKHTczo9No2gIt5SFeiBjNWc9OSQlA8XUgvcbnCMX8x8ZrjoEO1d7YmFOCIrQIWBgH00pt9qpq2u"
+);
 export default (app) => {
   process.on("uncaughtException", async (error) => {
     console.log(error);
@@ -36,6 +40,23 @@ export default (app) => {
         data: "Project is successfully working...",
       })
       .end();
+  });
+
+  app.post("/create-checkout-session", async (req, res) => {
+    try {
+      const { quantity } = req.body;
+      const session = await stripeObj.checkout.sessions.create({
+        payment_method_types: ["card"],
+        mode: "payment",
+        line_items: [{ price: "price_1MC98sSALYbO5cv1EWvSjIRL", quantity }],
+        success_url: `https://travel-diaries-capstone.netlify.app/success`,
+        cancel_url: `https://travel-diaries-capstone.netlify.app/failed`,
+      });
+      res.json({ url: session.url });
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({ error: e.message });
+    }
   });
 
   app.use((req, res, next) => {

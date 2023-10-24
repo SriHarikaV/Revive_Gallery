@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { editUser, deleteUser, login } from "../controllers/user/index.js";
+import {
+  register,
+  getUser,
+  editUser,
+  deleteUser,
+  login,
+} from "../controllers/user/index.js";
 
 const router = Router();
 
@@ -7,7 +13,9 @@ const router = Router();
 
 // AUTH
 
+router.post("/register", register);
 router.post("/login", login);
+router.get("/get", getUser);
 router.put("/edit", editUser);
 router.delete("/delete", deleteUser);
 
