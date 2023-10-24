@@ -1,0 +1,12 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/node:14  
+
+    steps:
+      - checkout  # Check out your source code
+      - run:
+          name: Print Hello, World
+          command: echo "Hello, World"
+          
