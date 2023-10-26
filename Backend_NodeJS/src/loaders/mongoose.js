@@ -1,14 +1,11 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+const { dbUri } = require("../config/index.js");
 
-import { dbUri } from "../config/index.js";
-
-export default async () => {
-  await mongoose
-    .connect(dbUri)
-    .then(() => {
-      console.log("Mongodb Connection");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+module.exports = async () => {
+  try {
+    await mongoose.connect(dbUri);
+    console.log("Mongodb Connection");
+  } catch (err) {
+    console.log(err);
+  }
 };

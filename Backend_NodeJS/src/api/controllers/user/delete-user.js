@@ -1,6 +1,6 @@
-import { User } from "../../../models/index.js";
+const { User } = require("../../../models/index.js");
 
-export default async (req, res) => {
+module.exports = async (req, res) => {
   try {
     const { email } = req.body;
 

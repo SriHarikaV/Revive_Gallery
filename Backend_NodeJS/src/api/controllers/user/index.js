@@ -1,7 +1,17 @@
 // AUTH
-export { default as register } from "./auth/register.js";
-// // EDIT
-export { default as editUser } from "./edit/edit-user.js";
+const registerAuth = require("./auth/register.js");
+exports.register = registerAuth;
 
-// // OTHER
-export { default as deleteUser } from "./delete-user.js";
+const loginAuth = require("./auth/login.js");
+exports.login = loginAuth;
+
+const getUser = require("./get-user.js");
+exports.getUser = getUser;
+
+// EDIT
+const editUser = require("./edit/edit-user.js");
+exports.editUser = editUser;
+
+// OTHER
+const deleteUser = require("./delete-user.js");
+exports.deleteUser = deleteUser;
