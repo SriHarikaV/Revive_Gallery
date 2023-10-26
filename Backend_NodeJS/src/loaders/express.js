@@ -1,12 +1,12 @@
-import express from "express";
-import cors from "cors";
-import compression from "compression";
-import morgan from "morgan";
-import helmet from "helmet";
-import { prefix } from "./../config/index.js";
-import routes from "./../api/routes/index.js";
-import bodyParser from "body-parser";
-export default (app) => {
+const express = require("express");
+const cors = require("cors");
+const compression = require("compression");
+const morgan = require("morgan");
+const helmet = require("helmet");
+const { prefix } = require("./../config/index.js");
+const routes = require("./../api/routes/index.js");
+const bodyParser = require("body-parser");
+module.exports = function (app) {
   process.on("uncaughtException", async (error) => {
     console.log(error);
   });

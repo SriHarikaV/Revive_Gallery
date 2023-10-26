@@ -1,5 +1,7 @@
-import userModel from "./user.js";
-import postModal from "./post.js";
+const userModel = require("./user.js");
+const productModel = require("./product.js");
 
-export const User = userModel;
-export const Post = postModal;
+module.exports = {
+  User: userModel,
+  Product: productModel,
+};
