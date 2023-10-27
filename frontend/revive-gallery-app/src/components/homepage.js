@@ -5,7 +5,6 @@ const Homepage = () => {
   return (
     <div className="Homepage">
       <div className="LogoContainer">
-        {/* Replace 'Your Logo' with your project's logo or symbol */}
         <img src="/images/revive-logo.png" alt="Your Logo" className="Logo" />
       </div>
       <div className="ContentContainer">
