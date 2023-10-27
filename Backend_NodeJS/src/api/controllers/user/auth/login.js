@@ -1,7 +1,7 @@
-import bcrypt from "bcrypt";
-import { User } from "../../../../models/index.js";
+const bcrypt = require("bcrypt");
+const { User } = require("../../../../models/index.js");
 
-export default async (req, res) => {
+module.exports = async (req, res) => {
   try {
     const { email, password } = req.body;
 
