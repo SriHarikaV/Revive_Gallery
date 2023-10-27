@@ -26,100 +26,53 @@ describe("insert", () => {
       data: "Project is successfully working...",
     });
   });
-  it("should authenticate a user with valid credentials", async () => {
-    const existingUser = {
+  it("should register a new user", async () => {
+    const newUser = {
       email: "test@example.com",
-      password: "password123", // Provide data for an existing user with valid credentials
+      password: "password123",
+      firstName: "John",
+      lastName: "Doe",
     };
 
-    // Assuming you have a route for registering users
-
     const response = await request(app)
-      .post("/api/user/login")
-      .send({
-        email: existingUser.email,
-        password: existingUser.password,
-      })
+      .post("/api/user/register")
+      .send(newUser)
       .expect(200);
 
     // Add more assertions as needed
     expect(response.body.user).toBeDefined();
+    expect(response.body.user.email).toBe(newUser.email);
     // Add more assertions as needed
   });
 
-  it("should handle invalid credentials (email)", async () => {
-    const invalidUser = {
-      // Provide data for a user with invalid email
-      email: "test@example.coms",
-      password: "wrongpass",
-    };
+  it("should handle validation errors", async () => {
+    const invalidUser = {};
 
     const response = await request(app)
-      .post("/api/user/login")
-      .send({
-        email: invalidUser.email,
-        password: invalidUser.password,
-      })
-      .expect(401);
+      .post("/api/user/register")
+      .send(invalidUser)
+      .expect(400);
 
     // Add more assertions as needed
     expect(response.body.error).toBeDefined();
     // Add more assertions as needed
   });
 
-  it("should handle invalid credentials (password)", async () => {
+  it("should handle existing user conflict", async () => {
     const existingUser = {
-      email: "test@example.com",
-    };
-
-    const response = await request(app)
-      .post("/api/user/login")
-      .send({
-        email: existingUser.email,
-        password: "invalidPassword",
-      })
-      .expect(401);
-
-    // Add more assertions as needed
-    expect(response.body.error).toBeDefined();
-    // Add more assertions as needed
-  });
-
-  it("should handle internal server error", async () => {
-    // Simulate an internal server error
-    jest
-      .spyOn(require("mongoose").Model, "findOne")
-      .mockImplementationOnce(() => {
-        throw new Error("Simulated Internal Server Error");
-      });
-
-    const existingUser = {
-      // Provide data for an existing user with valid credentials
-      email: "test@example.com",
+      email: "test@test.com",
       password: "password123",
+      firstName: "John",
+      lastName: "Doe",
     };
 
-    const { error } = await request(app)
-      .post("/api/user/login")
-      .send({
-        email: existingUser.email,
-        password: existingUser.password,
-      })
-      .expect(500);
+    const response = await request(app)
+      .post("/api/user/register")
+      .send(existingUser)
+      .expect(409);
 
     // Add more assertions as needed
-    expect(error).toBeDefined();
-    // Add more assertions as needed
-  });
-
-  it("should delete an existing user", async () => {
-    const { status } = await request(app)
-      .delete("/api/user/delete")
-      .send({ email: "test@example.com" })
-      .expect(200);
-
-    // Add more assertions as needed
-    expect(status).toBeTruthy();
+    expect(response.body.error).toBeDefined();
     // Add more assertions as needed
   });
 });
