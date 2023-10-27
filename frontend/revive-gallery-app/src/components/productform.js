@@ -22,38 +22,49 @@ function ProductForm() {
   };
 
   const handleCategoryChange = (e) => {
-    const { name, options } = e.target;
-    Array.from(options).forEach(option => {
-      // Check if the category is already selected
-      if (product.categories.includes(option)) {
-        // If selected, remove it
-        setProduct({
-          ...product,
-          categories: product.categories.filter((item) => item !== option),
-        });
-      } else {
-        // If not selected, add it
-        setProduct({
-          ...product,
-          categories: [...product.categories, option],
-        });
-      }
-    });
-    
     // const { name, options } = e.target;
-    // const selectedCategories = Array.from(options).filter((option) => option.selected).map((option) => option.value);
-    // setProduct({
-    //   ...product,
-    //   [name]: selectedCategories,
+    // Array.from(options).forEach(option => {
+      // Check if the category is already selected
+    //   if (product.categories.includes(option)) {
+    //     // If selected, remove it
+    //     setProduct({
+    //       ...product,
+    //       categories: product.categories.filter((item) => item !== option),
+    //     });
+    //   } else {
+    //     // If not selected, add it
+    //     setProduct({
+    //       ...product,
+    //       categories: [...product.categories, option],
+    //     });
+    //   }
     // });
+    
+    const { name, options } = e.target;
+    const selectedCategories = Array.from(options).filter((option) => option.selected).map((option) => option.value);
+    setProduct({
+      ...product,
+      [name]: selectedCategories,
+    });
   };
 
   const handleImageChange = (e) => {
     const selectedImages = Array.from(e.target.files);
-    setProduct({
-      ...product,
-      images: selectedImages,
-    });
+    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']; // Add other image types as needed
+
+    const invalidImages = selectedImages.filter((image) => !allowedImageTypes.includes(image.type));
+
+    if (invalidImages.length > 0) {
+      e.target.setCustomValidity('Please upload only image files (JPEG, PNG, GIF, or WebP).');
+    } else if (selectedImages.length < 5) {
+      e.target.setCustomValidity('Please upload at least 5 images.');
+    } else {
+      e.target.setCustomValidity(''); // Reset the custom validation message
+      setProduct({
+        ...product,
+        images: selectedImages,
+      });
+    }
   };
 
   const handleImgUpload = async (images) => {
@@ -96,22 +107,20 @@ function ProductForm() {
     console.log(formData);
 
     
-
-    // fetch("http://localhost:5000/product/create", {
-    //   method: "POST",
-    //   body: formData, 
-    // })
-    //   .then((response) => {
-    //     if (response.ok) {
-    //       console.log("Success");
-    //       console.log('Form Data:', product);
-    //     } else {
-    //       console.log("Bad response");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
+    fetch("http://localhost:8080/api/product", {
+      method: "POST",
+      body: formData, 
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Success");
+        } else {
+          console.log("Bad response");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   return (
