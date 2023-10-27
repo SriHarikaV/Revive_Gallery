@@ -1,7 +1,6 @@
-// AUTH
-const createAuth = require("./auth/create.js");
-exports.create = createAuth;
+const getProduct = require("./get-product.js");
+exports.getProduct = getProduct;
 
-// OTHER
-const deleteProduct = require("./delete-product.js");
-exports.deleteProduct = deleteProduct;
+// EDIT
+const editProduct = require("./edit/edit-product.js");
+exports.editProduct = editProduct;
