@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginForm from "./components/loginform";
-import RegistrationForm from "./components/registrationform";
-import ProductForm from "./components/productform";
+import LoginForm from "./components/LoginForm";
+import RegistrationForm from "./components/RegistrationForm";
+import ProductForm from "./components/ProductForm";
 import Marketplace from "./components/marketplace";
 import ProductDetails from "./components/productdetails";
 import Homepage from "./components/homepage";
