@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./productform.css"
+import { imgDB } from './FirebaseConfig';
+import { v4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 function ProductForm() {
   const [product, setProduct] = useState({
-    name: '',
+    title: '',
     description: '',
-    categories: [], // array to store selected categories
     price: '',
-    images: [] // array to store selected images
+    categories: [], // array to store selected categories
+    images: [], // array to store selected images/image urls
   });
 
   const handleInputChange = (e) => {
@@ -20,11 +23,29 @@ function ProductForm() {
 
   const handleCategoryChange = (e) => {
     const { name, options } = e.target;
-    const selectedCategories = Array.from(options).filter((option) => option.selected).map((option) => option.value);
-    setProduct({
-      ...product,
-      [name]: selectedCategories,
+    Array.from(options).forEach(option => {
+      // Check if the category is already selected
+      if (product.categories.includes(option)) {
+        // If selected, remove it
+        setProduct({
+          ...product,
+          categories: product.categories.filter((item) => item !== option),
+        });
+      } else {
+        // If not selected, add it
+        setProduct({
+          ...product,
+          categories: [...product.categories, option],
+        });
+      }
     });
+    
+    // const { name, options } = e.target;
+    // const selectedCategories = Array.from(options).filter((option) => option.selected).map((option) => option.value);
+    // setProduct({
+    //   ...product,
+    //   [name]: selectedCategories,
+    // });
   };
 
   const handleImageChange = (e) => {
@@ -35,32 +56,62 @@ function ProductForm() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleImgUpload = async (images) => {
+    const uploadPromises = images.map((image) => {
+      return new Promise((resolve, reject) => {
+        const imgRef = ref(imgDB, `products/Img${v4()}`);
+        uploadBytes(imgRef, image)
+          .then((data) => {
+            getDownloadURL(data.ref)
+              .then((url) => {
+                resolve(url);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    });
+
+    try {
+      const imageUrls = await Promise.all(uploadPromises);
+      console.log("image urls", imageUrls)
+      return imageUrls
+    } catch (error) {
+      console.error("Error uploading images:", error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Send the product data to the backend API
-    const formData = new FormData();
-    formData.append("name", product.name);
-    formData.append("description", product.description);
-    formData.append("price", product.price);
-    product.categories.forEach((category) => formData.append("categories", category));
-    product.images.forEach((image) => formData.append("images", image));
+    // Call handleImgUpload to upload and fetch URLs for all selected images
+    const imageUrls = await handleImgUpload(product.images);
 
-    fetch("http://localhost:5000/product/create", {
-      method: "POST",
-      body: formData, 
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("Success");
-          console.log('Form Data:', product);
-        } else {
-          console.log("Bad response");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    const formData = product;
+    formData['images'] = imageUrls;
+    console.log(formData);
+
+    
+
+    // fetch("http://localhost:5000/product/create", {
+    //   method: "POST",
+    //   body: formData, 
+    // })
+    //   .then((response) => {
+    //     if (response.ok) {
+    //       console.log("Success");
+    //       console.log('Form Data:', product);
+    //     } else {
+    //       console.log("Bad response");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
   };
 
   return (
@@ -69,14 +120,15 @@ function ProductForm() {
       <form onSubmit={handleSubmit}>
         
         <div className="form-group">
-          <label htmlFor="name">Product Name:</label>
+          <label htmlFor="title">Product Name:</label>
           <input
             type="text"
-            id="name"
-            name="name"
+            id="title"
+            name="title"
             value={product.name}
             onChange={handleInputChange}
             className="form-control"
+            required
           />
         </div>
 
@@ -88,6 +140,7 @@ function ProductForm() {
             value={product.description}
             onChange={handleInputChange}
             className="form-control"
+            required
           />
         </div>
 
@@ -100,10 +153,18 @@ function ProductForm() {
             value={product.categories}
             onChange={handleCategoryChange}
             className="form-control"
+            required
           >
             <option value="Electronics">Electronics</option>
             <option value="Clothing">Clothing</option>
             <option value="Books">Books</option>
+            <option value="Kitchen">Kitchen</option>
+            <option value="Furniture">Furniture</option>
+            <option value="HomeDecor">HomeDecor</option>
+            <option value="Toys">Toys</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Jewellery">Jewellery</option>
+            <option value="Stationery">Stationery</option>
           </select>
         </div>
 
@@ -116,6 +177,7 @@ function ProductForm() {
             value={product.price}
             onChange={handleInputChange}
             className="form-control"
+            required
           />
         </div>
 
@@ -128,6 +190,7 @@ function ProductForm() {
             multiple // Enable multiple file selection
             onChange={handleImageChange}
             className="form-control"
+            required
           />
         </div>
 
