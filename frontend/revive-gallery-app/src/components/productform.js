@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import "./ProductForm.css"
+import "./productform.css"
 import { imgDB } from './FirebaseConfig';
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';

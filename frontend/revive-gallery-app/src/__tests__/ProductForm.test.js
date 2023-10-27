@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import ProductForm from '../components/ProductForm';
+import ProductForm from '../components/productform';
 
 test('renders the product form', () => {
   render(<ProductForm />);
