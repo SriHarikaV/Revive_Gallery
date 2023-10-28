@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./loginform";
+import "./loginform.css";
 import { Link } from "react-router-dom";
 
 const RegistrationForm = () => {
@@ -12,13 +12,46 @@ const RegistrationForm = () => {
         acceptedTerms: false,
     });
 
-    const [popupStyle, showPopup] = useState("hide");
-    const [popupMessage, setPopupMessage] = useState("");
+    const [passwordValid, setPasswordValid] = useState(true); 
+    const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        let passwordValid = true;
+
+        if (name === "password") {
+            // Check for password criteria
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            passwordValid = passwordRegex.test(value);
+        }
+
+        setRegistration({
+            ...registration,
+            [name]: value,
+        });
+
+        setPasswordValid(passwordValid);
+    };
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        // Check if confirm password matches the password
+        if (registration.password !== registration.confirmPassword) {
+            setPasswordsMatch(false);
+            return;
+        } else {
+            setPasswordsMatch(true);
+        }
+
+        if (!passwordValid || !passwordsMatch ) {
+            console.log('Please enter');
+            return;
+        }
+        
         // Send the data to the backend API
-        fetch("http://localhost:5000/register", {
+        fetch("http://localhost:8080/api/user/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -27,30 +60,14 @@ const RegistrationForm = () => {
         })
             .then((response) => {
                 if (response.ok) {
-                    showPopup("signup-popup");
-                    setPopupMessage("Registration successful!");
-                    setTimeout(() => {
-                        showPopup("hide");
-                        setPopupMessage("");
-                    }, 3000);
+                    console.log(response);
                 } else {
-                    showPopup("signup-popup");
-                    setPopupMessage("Registration failed. Please try again.");
+                    console.log("Failed, Bad request: " + response);
                 }
             })
             .catch((error) => {
-                showPopup("signup-popup");
-                setPopupMessage("Error: " + error.message);
+                console.log(error);
             });
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        if (type === "checkbox") {
-            setRegistration({ ...registration, [name]: checked });
-        } else {
-            setRegistration({ ...registration, [name]: value });
-        }
     };
 
     return (
@@ -70,6 +87,7 @@ const RegistrationForm = () => {
                                     placeholder="First Name"
                                     value={registration.first_name}
                                     onChange={handleInputChange}
+                                    required
                                 />
                             </div>
                             <div className="form-group mb-3 col-6">
@@ -80,6 +98,7 @@ const RegistrationForm = () => {
                                     placeholder="Last Name"
                                     value={registration.last_name}
                                     onChange={handleInputChange}
+                                    required
                                 />
                             </div>
                         </div>
@@ -92,8 +111,20 @@ const RegistrationForm = () => {
                                 placeholder="Email"
                                 value={registration.email}
                                 onChange={handleInputChange}
+                                required
                             />
                         </div>
+
+                        {/* Password validation message */}
+                        {!passwordValid && (
+                            <div className="text-danger">
+                                Password does not meet the criteria.
+                                It should have at least 8 characters, 
+                                including one lowercase letter,
+                                one uppercase letter, one digit, 
+                                and one special character.
+                            </div>
+                        )}
 
                         <div className="form-group mb-3">
                             <input
@@ -103,6 +134,7 @@ const RegistrationForm = () => {
                                 placeholder="Password"
                                 value={registration.password}
                                 onChange={handleInputChange}
+                                required
                             />
                         </div>
 
@@ -114,22 +146,11 @@ const RegistrationForm = () => {
                                 placeholder="Confirm Password"
                                 value={registration.confirmPassword}
                                 onChange={handleInputChange}
+                                required
                             />
-                        </div>
-
-                        <div className="form-group mb-3">
-                            <input
-                                type="checkbox"
-                                name="acceptedTerms"
-                                className="form-check-input"
-                                checked={registration.acceptedTerms}
-                                onChange={handleInputChange}
-                            />
-                            <label className="form-check-label">
-                                I accept the
-                                <Link to="/terms"> Terms of Use</Link> &{" "}
-                                <Link to="/privacy">Privacy Policy</Link>
-                            </label>
+                            {!passwordsMatch && (
+                                <div className="text-danger">Passwords do not match.</div>
+                            )}
                         </div>
 
                         <div className="form-group mb-3">
