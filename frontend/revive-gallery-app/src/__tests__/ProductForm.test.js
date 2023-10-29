@@ -62,9 +62,6 @@ test('test the count of image files', () => {
     // Trigger the file input change event with mock image files
     fireEvent.change(fileInput, { target: { files: mockImageFiles1 } });
   
-    // Assert that the input field is invalid (validation messages arises)
-    expect(fileInput.validity.valid).toBeInvalid;
-
     // Assert that the input field is valid (no validation message)
     expect(fileInput.validity.valid).toBeValid;
   
