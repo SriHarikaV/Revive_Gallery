@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import "./loginform.css";
+import "../../styles/auth/LoginForm.css";
 import { Link } from "react-router-dom";
 
 const RegistrationForm = () => {
     const [registration, setRegistration] = useState({
-        first_name: '',
-        last_name: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
         confirmPassword: '',
-        acceptedTerms: false,
     });
 
     const [passwordValid, setPasswordValid] = useState(true); 
@@ -49,6 +48,9 @@ const RegistrationForm = () => {
             console.log('Please enter');
             return;
         }
+
+        const { confirmPassword, ...registrationData } = registration;
+        console.log(registrationData, typeof(registrationData));
         
         // Send the data to the backend API
         fetch("http://localhost:8080/api/user/register", {
@@ -56,7 +58,7 @@ const RegistrationForm = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(registration),
+            body: JSON.stringify(registrationData)
         })
             .then((response) => {
                 if (response.ok) {
@@ -83,9 +85,9 @@ const RegistrationForm = () => {
                                 <input
                                     className="form-control"
                                     type="text"
-                                    name="first_name"
+                                    name="firstName"
                                     placeholder="First Name"
-                                    value={registration.first_name}
+                                    value={registration.firstName}
                                     onChange={handleInputChange}
                                     required
                                 />
@@ -94,9 +96,9 @@ const RegistrationForm = () => {
                                 <input
                                     className="form-control"
                                     type="text"
-                                    name="last_name"
+                                    name="lastName"
                                     placeholder="Last Name"
-                                    value={registration.last_name}
+                                    value={registration.lastName}
                                     onChange={handleInputChange}
                                     required
                                 />

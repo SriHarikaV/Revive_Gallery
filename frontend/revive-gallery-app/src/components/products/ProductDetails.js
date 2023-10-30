@@ -1,5 +1,5 @@
 import React from 'react';
-import ImageGallery from './productimagegallery';
+import ImageGallery from '../../styles/products/ProductImageGallery';
 // import image1 from '../images/avengers.jpg';
 // import image2 from '../images/slu.png';
 

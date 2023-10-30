@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate   } from "react-router-dom";
-import "./loginform.css";
+import "../../styles/auth/LoginForm.css";
 
 const LoginForm = () => {
     const navigate=useNavigate();
@@ -13,10 +13,10 @@ const LoginForm = () => {
     const handleSubmit = (event) => {
         console.log(credentials)
         event.preventDefault();
+        
         // Send the login data to the backend API
-        fetch("http://localhost:5000/login", {
+        fetch("http://localhost:8080/api/user/login", {
             method: "POST",
-            // mode: 'no-cors',
             headers: {
                 "Content-Type": "application/json",
             },

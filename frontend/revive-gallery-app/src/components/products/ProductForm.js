@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import "./productform.css"
-import { imgDB } from './FirebaseConfig';
+import "../../styles/products/ProductForm.css"
+import { imgDB } from '../FirebaseConfig';
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
@@ -22,24 +22,6 @@ function ProductForm() {
   };
 
   const handleCategoryChange = (e) => {
-    // const { name, options } = e.target;
-    // Array.from(options).forEach(option => {
-      // Check if the category is already selected
-    //   if (product.categories.includes(option)) {
-    //     // If selected, remove it
-    //     setProduct({
-    //       ...product,
-    //       categories: product.categories.filter((item) => item !== option),
-    //     });
-    //   } else {
-    //     // If not selected, add it
-    //     setProduct({
-    //       ...product,
-    //       categories: [...product.categories, option],
-    //     });
-    //   }
-    // });
-    
     const { name, options } = e.target;
     const selectedCategories = Array.from(options).filter((option) => option.selected).map((option) => option.value);
     setProduct({
@@ -50,7 +32,7 @@ function ProductForm() {
 
   const handleImageChange = (e) => {
     const selectedImages = Array.from(e.target.files);
-    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']; // Add other image types as needed
+    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']; 
 
     const invalidImages = selectedImages.filter((image) => !allowedImageTypes.includes(image.type));
 
@@ -165,6 +147,7 @@ function ProductForm() {
             required
           >
             <option value="Electronics">Electronics</option>
+            <option value="Watches">Watches</option>
             <option value="Clothing">Clothing</option>
             <option value="Books">Books</option>
             <option value="Kitchen">Kitchen</option>

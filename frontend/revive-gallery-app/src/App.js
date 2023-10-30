@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginForm from "./components/loginform";
-import RegistrationForm from "./components/registrationform";
-import ProductForm from "./components/productform";
-import Marketplace from "./components/marketplace";
-import ProductDetails from "./components/productdetails";
-import Homepage from "./components/homepage";
+import LoginForm from "./components/auth/LoginForm";
+import RegistrationForm from "./components/auth/RegistrationForm";
+import ProductForm from "./components/products/ProductForm";
+import Marketplace from "./components/products/MarketPlace";
+import ProductDetails from "./components/products/ProductDetails";
+import Homepage from "./components/home/HomePage";
 
 
 
@@ -17,7 +17,7 @@ function App() {
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/mp" element={<Marketplace />} />
           <Route path="/products/1" element={<ProductDetails />} />
-          <Route path="/add" element={<ProductForm />} />
+          <Route path="/addproduct" element={<ProductForm />} />
       </Routes>   
     </Router>
     
