@@ -11,6 +11,7 @@ function ProductForm() {
     price: '',
     categories: [], // array to store selected categories
     images: [], // array to store selected images/image urls
+    owner: '653f0b1b7aa28e72cb263133',
   });
 
   const handleInputChange = (e) => {
@@ -91,7 +92,10 @@ function ProductForm() {
     
     fetch("http://localhost:8080/api/product", {
       method: "POST",
-      body: formData, 
+      headers: {
+        "Content-Type": "application/json",
+    },
+      body: JSON.stringify(formData), 
     })
       .then((response) => {
         if (response.ok) {
