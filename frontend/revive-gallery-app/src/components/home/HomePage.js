@@ -1,5 +1,5 @@
 import React from 'react';
-import './homepage.css';
+import "../../styles/home/HomePage.css";
 
 const Homepage = () => {
   return (
