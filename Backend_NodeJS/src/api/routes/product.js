@@ -9,7 +9,8 @@ const {
 const router = Router();
 
 // AUTH
-
+router.post("/", create);
+router.delete("/", deleteProduct);
 router.get("/", getProduct);
 router.put("/", editProduct);
 
