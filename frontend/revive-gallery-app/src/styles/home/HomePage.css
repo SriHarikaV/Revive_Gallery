@@ -1,34 +1,72 @@
-
 .Homepage {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .LogoContainer {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .Logo {
-    max-width: 200px; 
-  }
-  
-  .ContentContainer {
-    text-align: center;
-  }
-  
-  h1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url("../../static/images/background_consumer.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.LogoContainer {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.Logo {
+  max-width: 200px;
+}
+
+.ContentContainer {
+  text-align: center;
+}
+
+  .MainHeading {
     font-size: 36px;
-    color: #333;
+    color: #0c0202;
     margin-bottom: 20px;
-  }
-  
-  p {
+}
+
+  .SubHeading {
     font-size: 18px;
-    color: #555;
+    color: #070000;
     margin-bottom: 10px;
+}
+
+.ButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
   }
-  
+
+.ExploreButton {
+  background-color: #05a82e;
+  color: #fff;
+  border: none;
+  padding: 2px 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: #4bbb2f;
+  }
+}
+
+.AddProductButton {
+  background-color: #f0c507;
+  color: #fff;
+  border: none;
+  padding: 2px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color: #ecd713;
+  }
+}

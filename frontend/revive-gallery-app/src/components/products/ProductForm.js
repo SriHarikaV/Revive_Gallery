@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import "../../styles/products/ProductForm.css"
 import { imgDB } from '../FirebaseConfig';
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { useNavigate } from "react-router-dom";
 
 function ProductForm() {
+  const navigate = useNavigate();
   const [product, setProduct] = useState({
     title: '',
     description: '',
@@ -99,6 +101,7 @@ function ProductForm() {
     })
       .then((response) => {
         if (response.ok) {
+          navigate('/products');
           console.log("Success");
         } else {
           console.log("Bad response");
