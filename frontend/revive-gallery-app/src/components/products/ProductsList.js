@@ -23,7 +23,6 @@ const ProductsList = () => {
     .then((data) => {
         console.log('Received data:', data);
         setProducts(data.products);
-        console.log('set products', products)
     })
     .catch((error) => console.error("Error fetching products:", error));
   }, []);
