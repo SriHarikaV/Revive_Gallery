@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import "../../styles/auth/LoginForm.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegistrationForm = () => {
+    const navigate = useNavigate();
     const [registration, setRegistration] = useState({
         firstName: '',
         lastName: '',
@@ -62,6 +63,7 @@ const RegistrationForm = () => {
         })
             .then((response) => {
                 if (response.ok) {
+                    navigate('/');
                     console.log(response);
                 } else {
                     console.log("Failed, Bad request: " + response);

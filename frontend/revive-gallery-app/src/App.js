@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginForm from "./components/auth/LoginForm";
 import RegistrationForm from "./components/auth/RegistrationForm";
 import ProductForm from "./components/products/ProductForm";
-import Marketplace from "./components/products/MarketPlace";
+import ProductsList from "./components/products/ProductsList";
 import ProductDetails from "./components/products/ProductDetails";
 import Homepage from "./components/home/HomePage";
 
@@ -15,7 +15,7 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
-          <Route path="/mp" element={<Marketplace />} />
+          <Route path="/products" element={<ProductsList />} />
           <Route path="/products/1" element={<ProductDetails />} />
           <Route path="/addproduct" element={<ProductForm />} />
       </Routes>   
