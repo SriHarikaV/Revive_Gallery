@@ -1,5 +1,6 @@
 import React from 'react';
 import ImageGallery from './ProductImageGallery';
+import { useLocation } from 'react-router-dom';
 import "../../styles/products/ProductDetails.css"
 import watch1 from '../../static/images/watch1.jpg';
 import watch2 from '../../static/images/watch2.jpg';
@@ -8,6 +9,10 @@ import watch4 from '../../static/images/watch4.jpg';
 import watch5 from '../../static/images/watch5.jpg';
 
 const ProductDetails = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const productId = searchParams.get('id');
+
   const product = {
     title: 'Sample Product',
     description: 'This is a test product description.',

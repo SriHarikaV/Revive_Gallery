@@ -6,8 +6,6 @@ import ProductsList from "./components/products/ProductsList";
 import ProductDetails from "./components/products/ProductDetails";
 import Homepage from "./components/home/HomePage";
 
-
-
 function App() {
   return (
     <Router>
@@ -16,7 +14,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/products" element={<ProductsList />} />
-          <Route path="/products/1" element={<ProductDetails />} />
+          <Route path="/products/details" element={<ProductDetails />} />
           <Route path="/addproduct" element={<ProductForm />} />
       </Routes>   
     </Router>
