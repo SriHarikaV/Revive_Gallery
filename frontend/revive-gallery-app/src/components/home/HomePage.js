@@ -1,6 +1,7 @@
 import React from 'react';
 import "../../styles/home/HomePage.css";
 import { useNavigate } from "react-router-dom";
+import logoImage from "../../static/images/revive-logo.png";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Homepage = () => {
   return (
     <div className="Homepage">
       <div className="LogoContainer">
-        <img src="/images/revive-logo.png" alt="Your Logo" className="Logo" />
+        <img src={logoImage} alt="Revive Gallery Logo" className="Logo" />
       </div>
       <div className="ContentContainer">
         <h1 className='MainHeading'>Welcome to the Revive Gallery</h1>

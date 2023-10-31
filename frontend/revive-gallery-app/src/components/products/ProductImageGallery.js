@@ -14,11 +14,14 @@ const ImageGallery = ({ images }) => {
   return (
     <div className="image-gallery">
       <div className="image-container">
-        <img src={images[currentIndex]} alt={`Image ${currentIndex + 1}`} />
+        <img 
+          src={images[currentIndex]} 
+          alt={`Image ${currentIndex + 1}`}
+        />
       </div>
       <div className="navigation">
         <button onClick={prevSlide} disabled={currentIndex === 0}>
-          Previous
+          Prev
         </button>
         <button onClick={nextSlide} disabled={currentIndex === images.length - 1}>
           Next

@@ -1,27 +1,19 @@
 import React from 'react';
-import ImageGallery from '../../styles/products/ProductImageGallery';
-// import image1 from '../images/avengers.jpg';
-// import image2 from '../images/slu.png';
+import ImageGallery from './ProductImageGallery';
+import "../../styles/products/ProductDetails.css"
+import watch1 from '../../static/images/watch1.jpg';
+import watch2 from '../../static/images/watch2.jpg';
+import watch3 from '../../static/images/watch3.jpg';
+import watch4 from '../../static/images/watch4.jpg';
+import watch5 from '../../static/images/watch5.jpg';
 
 const ProductDetails = () => {
   const product = {
     title: 'Sample Product',
     description: 'This is a test product description.',
-    // Assuming you have image files in the "images" folder
-    images: [
-    //   `${process.env.PUBLIC_URL}/images/avengers.jpg`,
-    //   `${process.env.PUBLIC_URL}/images/plagiarism.png`,
-    //   `${process.env.PUBLIC_URL}/images/slu.png`,
-    //   '../images/slu.png',
-    //   '../images/plagiarism.png',
-    //   '../images/avengers.jpg',
-    '/images/slu.png',
-    '/images/plagiarism.png',
-    '/images/avengers.jpg',
-    //   './avengers.jpg'
-    ],
+    images: [watch1, watch2, watch3, watch4, watch5],
   };
-
+ 
   const categories = [
     { id: 1, name: 'Category A' },
     { id: 2, name: 'Category B' },
@@ -29,23 +21,12 @@ const ProductDetails = () => {
 
   return (
     <div>
-      <h1>{product.title}</h1>
+      
       <ImageGallery images={product.images} />
-      {/* <div>
-        {product.images.map((image, index) => (
-          <img
-            key={index}
-            src = {image}
-            alt={product.title}
-            height = "200"
-            width = "200"
-            // style={{ maxWidth: '100%' }}
-          />
-        ))}
-      </div> */}
+      <h3>{product.title}</h3>
       <p>{product.description}</p>
       <div>
-        <h2>Categories</h2>
+        <h4>Categories</h4>
         <ul>
           {categories.map((category) => (
             <li key={category.id}>{category.name}</li>
