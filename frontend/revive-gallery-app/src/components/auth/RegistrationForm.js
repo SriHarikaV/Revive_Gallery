@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "../../styles/auth/LoginForm.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "./UserContext";
 
 const RegistrationForm = () => {
     const navigate = useNavigate();
+    const { setUser} = useUser();
+    
     const [registration, setRegistration] = useState({
         firstName: '',
         lastName: '',
@@ -63,14 +66,18 @@ const RegistrationForm = () => {
         })
             .then((response) => {
                 if (response.ok) {
-                    navigate('/');
-                    console.log(response);
+                    return response.json();
                 } else {
-                    console.log("Failed, Bad request: " + response);
+                    throw new Error("Failed, Bad request: " + response);
                 }
             })
+            .then((data) => {
+                console.log("data", data)
+                setUser(data.user, "1234"); // To-Do: Read the token from backend instead of hardocoding
+                navigate('/');
+            })
             .catch((error) => {
-                console.log(error);
+                console.log("Error: " + error.message);
             });
     };
 
