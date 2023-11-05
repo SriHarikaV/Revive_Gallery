@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate   } from "react-router-dom";
 import "../../styles/auth/LoginForm.css";
+import { useUser } from "./UserContext";
 
 const LoginForm = () => {
     const navigate = useNavigate();
+    const { setUser} = useUser();
+
     const [credentials, setCredentials] = useState({
         email: "",
         password: "",
@@ -23,11 +26,15 @@ const LoginForm = () => {
         })
             .then((response) => {
                 if (response.ok) {
-                    console.log('login ok')
-                    navigate('/');
+                    return response.json();
                 } else {
-                    console.log("Login failed. Please check your credentials.");
+                    throw new Error("Login failed. Please check your credentials.");
                 }
+            })
+            .then((data) => {
+                console.log("data", data)
+                setUser(data.user, "1234"); // To-Do: Read the token from backend instead of hardocoding
+                navigate('/');
             })
             .catch((error) => {
                 console.log("Error: " + error.message);
