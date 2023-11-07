@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ImageGallery from './ProductImageGallery';
 import { useLocation } from 'react-router-dom';
 import "../../styles/products/ProductDetails.css"
@@ -12,8 +12,32 @@ const ProductDetails = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get('id');
+  const [product, setProduct] = useState({});
 
-  const product = {
+  useEffect(() => {
+    // Fetch the product with given productId from the backend API
+    fetch(`http://localhost:8080/api/product?_id=${productId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.log("Request failed. Status: " + response.status);
+            throw new Error("Request failed");
+        }
+    })
+    .then((data) => {
+        console.log('Received data:', data.products[0]);
+        setProduct(data.products[0])
+    })
+    .catch((error) => console.error("Error fetching products:", error));
+  }, []);
+
+  const productDemo = {
     title: 'Sample Product',
     description: 'This is a test product description.',
     images: [watch1, watch2, watch3, watch4, watch5],
@@ -25,11 +49,23 @@ const ProductDetails = () => {
   ];
 
   return (
+    // <div>
+    //   <ImageGallery images={product.images} />
+    //   <h3>{product.title}</h3>
+    //   <p>{product.description}</p>
+    //   <div>
+    //     <h4>Categories</h4>
+    //     <ul>
+    //       {categories.map((category) => (
+    //         <li key={category.id}>{category.name}</li>
+    //       ))}
+    //     </ul>
+    //   </div>
+    // </div>
     <div>
-      
-      <ImageGallery images={product.images} />
-      <h3>{product.title}</h3>
-      <p>{product.description}</p>
+      <ImageGallery images={productDemo.images} />
+      <h3>{productDemo.title}</h3>
+      <p>{productDemo.description}</p>
       <div>
         <h4>Categories</h4>
         <ul>
