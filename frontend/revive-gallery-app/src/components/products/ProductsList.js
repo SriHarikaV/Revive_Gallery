@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import '../../styles/products/ProductsList.css';
 
 const ProductsList = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const categoriesParam = searchParams.get('categories');
 
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let productsUrl;
+    if (categoriesParam) {
+      productsUrl = `http://localhost:8080/api/product?categories=${categoriesParam}`;
+    } else {
+      productsUrl = `http://localhost:8080/api/product`;
+    }
+    
     // Fetch all the products from the backend API
-    fetch("http://localhost:8080/api/product", {
+    fetch(productsUrl, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +39,7 @@ const ProductsList = () => {
         console.error("Error fetching products:", error);
         setError(error.message);
       });
-  }, []);
+  }, [categoriesParam]);
 
   return (
     <div>

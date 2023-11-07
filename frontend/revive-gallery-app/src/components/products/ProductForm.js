@@ -4,6 +4,7 @@ import { imgDB } from '../FirebaseConfig';
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useNavigate } from "react-router-dom";
+import categories from '../../data/categories';
 
 function ProductForm() {
   const navigate = useNavigate();
@@ -153,17 +154,9 @@ function ProductForm() {
             className="form-control"
             required
           >
-            <option value="Electronics">Electronics</option>
-            <option value="Watches">Watches</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Books">Books</option>
-            <option value="Kitchen">Kitchen</option>
-            <option value="Furniture">Furniture</option>
-            <option value="HomeDecor">HomeDecor</option>
-            <option value="Toys">Toys</option>
-            <option value="Shoes">Shoes</option>
-            <option value="Jewellery">Jewellery</option>
-            <option value="Stationery">Stationery</option>
+            {categories.map((category) => (
+              <option value={category.name}>{category.name}</option>
+            ))}
           </select>
         </div>
 
