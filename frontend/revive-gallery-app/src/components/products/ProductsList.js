@@ -17,7 +17,7 @@ const ProductsList = () => {
     } else {
       productsUrl = `http://localhost:8080/api/product`;
     }
-    
+
     // Fetch all the products from the backend API
     fetch(productsUrl, {
       method: "GET",
@@ -32,7 +32,7 @@ const ProductsList = () => {
         return response.json();
       })
       .then(async (data) => {
-        console.log('Received data:', data);
+        console.log('Products List:', data);
         setProducts(data.products);
       })
       .catch((error) => {
@@ -55,7 +55,7 @@ const ProductsList = () => {
                 />
               </div>
             </Link>
-            <div className="product-info">
+            <div className="product-list-info">
               <h2>{product.title}</h2>
               <p>${product.price}</p>
             </div>
