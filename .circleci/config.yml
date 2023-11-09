@@ -1,12 +1,49 @@
-version: 2.1
-jobs:
-  build:
-    docker:
-      - image: circleci/node:14  
+# version: 2.1
+# jobs:
+#   build:
+#     docker:
+#       - image: circleci/node:14  
 
+#     steps:
+#       - checkout  # Check out your source code
+#       - run:
+#           name: Print Hello, UNIV New # testing the setup
+#           command: echo "Hello, World"
+
+version: 2.1
+
+jobs:
+  build_and_push:
+    docker:
+      - image: cimg/python:3.8
     steps:
-      - checkout  # Check out your source code
-      - run:
-          name: Print Hello, UNIV New # testing the setup
-          command: echo "Hello, World"
-          
+      - checkout
+      - setup_remote_docker:
+        version: 19.03.13
+
+    - run:
+      name: Build Docker Image
+      command: |
+      docker build -t $DOCKERHUB_USERNAME/myapp:${CIRCLE_SHA1} .
+
+    - run:
+      name: Authenticate with Docker Hub
+      command: |
+        echo "$DOCKERHUB_PASS" | docker login --username $DOCKERHUB_USERNAME --passwor
+      d-stdin
+
+    - run:
+      name: Push Docker Image to Docker Hub
+      command: |
+        docker push $DOCKERHUB_USERNAME/myapp:${CIRCLE_SHA1}
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build_and_push:
+        filters:
+          branches:
+            only: main
+
+
