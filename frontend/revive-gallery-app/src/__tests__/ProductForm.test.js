@@ -1,13 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from "react-router-dom";
 import ProductForm from '../components/products/ProductForm';
 
 test('renders the product form', () => {
-  render(
-    <MemoryRouter> // MemoryRouter mimics BrowserRouter or HashRouter
-        <ProductForm />
-    </MemoryRouter>
-  );
+  render(<ProductForm />);
 
   expect(screen.getByRole("heading")).toHaveTextContent(/Add a New Product/);
 
@@ -17,11 +12,7 @@ test('renders the product form', () => {
 });
 
 test('test the file formats', () => {
-  render(
-    <MemoryRouter> // MemoryRouter mimics BrowserRouter or HashRouter
-        <ProductForm />
-    </MemoryRouter>
-  );
+  render(<ProductForm />);
 
   const fileInput = screen.getByLabelText('Product Images:');
 
@@ -54,11 +45,7 @@ test('test the file formats', () => {
 });
 
 test('test the count of image files', () => {
-    render(
-      <MemoryRouter> // MemoryRouter mimics BrowserRouter or HashRouter
-          <ProductForm />
-      </MemoryRouter>
-    );
+    render(<ProductForm />);
   
     const fileInput = screen.getByLabelText('Product Images:');
   

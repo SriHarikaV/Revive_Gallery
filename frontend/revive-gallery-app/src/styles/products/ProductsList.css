@@ -7,7 +7,6 @@
 
 .product-item {
   width: 260px;
-  height: 280px; 
   margin: 10px;
   text-align: center;
   border: 1px solid #ccc;
@@ -21,7 +20,7 @@
 
 .product-image {
   width: 100%;
-  height: 220px; 
+  height: 220px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,7 +33,7 @@
   object-fit: cover; /* Adjust the value to control how the image fits within the fixed height */
 }
 
-.product-list-info {
+.product-info {
   background-color: rgb(250, 240, 227);
   display: flex;
   justify-content: space-between;
@@ -42,13 +41,16 @@
   padding: 2px; /* Add padding for spacing */
 }
 
-.product-list-info h2 {
+.product-info h2 {
   font-size: 1rem; /* Adjust font size as needed */
   color: #0c0b0b;
   margin: 0; /* Remove margin to align with price */
 }
 
-.product-list-info p {
+.product-info p {
   color: #0c0b0b;
   margin: 0; /* Remove margin to align with title */
+}
+.chat_seller {
+  margin-bottom: 5px;
 }
