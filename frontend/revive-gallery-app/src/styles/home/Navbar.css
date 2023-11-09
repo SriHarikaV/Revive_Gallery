@@ -31,7 +31,6 @@
   .navbar-links button {
     background-color: transparent;
     border: none;
-    color: #fff;
     cursor: pointer;
   }
 
@@ -79,15 +78,15 @@
   .dropdown-content li:last-child {
     border-bottom: none; /* Remove the separator from the last button */
   }
+
+  .dropdown-content li:hover {
+    background-color: #8cc2bf;
+  }
   
   .dropdown-content a {
     display: block;
     padding: 3px; /* Add some padding to the buttons for better spacing */
     text-decoration: none;
     color: #000000;
-  }
-  
-  .dropdown-content a:hover {
-    background-color: #8cc2bf;
   }
   
