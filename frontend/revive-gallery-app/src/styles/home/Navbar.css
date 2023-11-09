@@ -1,0 +1,93 @@
+.navbar {
+    background-color: rgb(77, 92, 122);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 10px;
+  }
+  
+  .navbar-logo img {
+    height: 40px;
+    padding-left: 30px;
+  }
+  
+  .navbar-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-right: 200px;
+  }
+  
+  .navbar-links li {
+    font-size: 18px;
+  }
+  
+  .navbar-links a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  .navbar-links button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .dropdown {
+    position: relative;
+  }
+  
+  .dropdown-content {
+    margin-left: 0;
+    padding-left: 0;
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    z-index: 1;
+    /*right: 0; /* Align the dropdown to the right */
+    top: 100%; /* Position it below the dropdown trigger */
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown-content ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .dropdown-content li {
+    padding: 0;
+    padding-left: 10;
+    list-style: none;
+    margin: 0;
+    margin-left: 0;
+    text-align: left;
+    border-bottom: 1px solid #ddd; /* Add a separator between buttons */
+  }
+
+  .dropdown-content * {
+    box-sizing: border-box;
+  }
+  
+  .dropdown-content li:last-child {
+    border-bottom: none; /* Remove the separator from the last button */
+  }
+  
+  .dropdown-content a {
+    display: block;
+    padding: 3px; /* Add some padding to the buttons for better spacing */
+    text-decoration: none;
+    color: #000000;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #8cc2bf;
+  }
+  
