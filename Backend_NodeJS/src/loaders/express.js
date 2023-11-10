@@ -18,8 +18,11 @@ module.exports = function (app) {
   app.enable("trust proxy");
   app.set("trust proxy", true);
   app.use(cors());
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParser.json());
+  app.use(express.json());
+
+  // Parse URL-encoded form data
+  app.use(express.urlencoded({ extended: false }));
+  
   app.use(morgan("dev"));
   app.use(helmet());
   app.use(compression());
