@@ -1,54 +1,67 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import '../../styles/products/ProductsList.css';
 
 const ProductsList = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const categoriesParam = searchParams.get('categories');
+
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    let productsUrl;
+    if (categoriesParam) {
+      productsUrl = `http://localhost:8080/api/product?categories=${categoriesParam}`;
+    } else {
+      productsUrl = `http://localhost:8080/api/product`;
+    }
+
     // Fetch all the products from the backend API
-    fetch("http://localhost:8080/api/product", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
+    fetch(productsUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
-    .then((response) => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            console.log("Request failed. Status: " + response.status);
-            throw new Error("Request failed");
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Request failed with status: " + response.status);
         }
-    })
-    .then((data) => {
-        console.log('Received data:', data);
+        return response.json();
+      })
+      .then(async (data) => {
+        console.log('Products List:', data);
         setProducts(data.products);
-    })
-    .catch((error) => console.error("Error fetching products:", error));
-  }, []);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+        setError(error.message);
+      });
+  }, [categoriesParam]);
 
   return (
     <div>
-      <h1>Marketplace</h1>
-      <table className="product-table">
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Description</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product._id}>
-              <td>{product.title}</td>
-              <td>{product.description}</td>
-              <td>${product.price}</td>
-              <td><Link to={`/products/details?id=${product._id}`}>{product._id}</Link></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {error && <p>Error: {error}</p>}
+      <div className="product-container">
+        {products.map((product) => (
+          <div key={product._id} className="product-item">
+            <Link to={`/products/details?id=${product._id}`}>
+              <div className="product-image">
+                <img
+                  src={product.images[0]} 
+                  alt={product.description}
+                />
+              </div>
+            </Link>
+            <div className="product-list-info">
+              <h2>{product.title}</h2>
+              <p>${product.price}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

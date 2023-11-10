@@ -1,42 +1,60 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ImageGallery from './ProductImageGallery';
 import { useLocation } from 'react-router-dom';
 import "../../styles/products/ProductDetails.css"
-import watch1 from '../../static/images/watch1.jpg';
-import watch2 from '../../static/images/watch2.jpg';
-import watch3 from '../../static/images/watch3.jpg';
-import watch4 from '../../static/images/watch4.jpg';
-import watch5 from '../../static/images/watch5.jpg';
 
 const ProductDetails = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get('id');
+  const [product, setProduct] = useState({});
 
-  const product = {
-    title: 'Sample Product',
-    description: 'This is a test product description.',
-    images: [watch1, watch2, watch3, watch4, watch5],
-  };
- 
-  const categories = [
-    { id: 1, name: 'Category A' },
-    { id: 2, name: 'Category B' },
-  ];
+  useEffect(() => {
+    let productUrl = `http://localhost:8080/api/product?_id=${productId}`;
+
+    // Fetch the product with given productId from the backend API
+    fetch(productUrl, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.log("Request failed. Status: " + response.status);
+            throw new Error("Request failed");
+        }
+    })
+    .then((data) => {
+        setProduct(data.products[0]);
+    })
+    .catch((error) => console.error("Error fetching products:", error));
+  }, [productId]);
+
+  if (Object.keys(product).length === 0) {
+    // if product is empty, render nothing
+    return null;
+  }
 
   return (
-    <div>
-      
-      <ImageGallery images={product.images} />
-      <h3>{product.title}</h3>
-      <p>{product.description}</p>
-      <div>
-        <h4>Categories</h4>
-        <ul>
-          {categories.map((category) => (
-            <li key={category.id}>{category.name}</li>
-          ))}
-        </ul>
+    <div className="product-details">
+      <div className="product-info">
+        <p className="product-status">Available</p>
+        <div className="title-price">
+          <h3 className="product-title">{product.title}</h3>
+          <h3 className="product-price">${product.price}</h3>
+        </div>
+        <p className="product-description">{product.description}</p>
+      </div>
+      <div className="image-gallery">
+        <ImageGallery images={product.images} />
+      </div>
+      <div className="owner-info">
+        <div>To do owner name</div>
+        <button>Chat with Owner</button>
+        <button>Buy this online</button>
       </div>
     </div>
   );
