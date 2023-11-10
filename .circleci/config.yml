@@ -30,7 +30,7 @@ jobs:
           command: cd frontend/revive-gallery-app && npm test
       - run:
           name: Create Build
-          command: cd frontend/revive-gallery-app && npm run build
+          command: cd frontend/revive-gallery-app && CI='' npm run build
 
   # deploy:
   #   docker:
