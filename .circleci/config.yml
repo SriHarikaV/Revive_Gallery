@@ -95,13 +95,13 @@ workflows:
 #           command: npm start
 
 
-workflows:
-  version: 2
-  build_and_deploy:
-    jobs:
-      - build_and_push:
-        filters:
-          branches:
-            only: main
+# workflows:
+#   version: 2
+#   build_and_deploy:
+#     jobs:
+#       - build_and_push:
+#         filters:
+#           branches:
+#             only: main
 
 
