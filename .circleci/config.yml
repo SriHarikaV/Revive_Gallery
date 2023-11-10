@@ -28,18 +28,21 @@ jobs:
       - run:
           name: Run Tests
           command: cd frontend/revive-gallery-app && npm test
-
-  deploy:
-    docker:
-      - image: circleci/node:14
-
-    steps:
       - run:
-          name: Start Backend_NodeJS
-          command: cd Backend_NodeJS && npm start
-      - run:
-          name: Start Backend_NodeJS
-          command: cd frontend/revive-gallery-app && npm start
+          name: Create Build
+          command: cd frontend/revive-gallery-app && npm run build
+
+  # deploy:
+  #   docker:
+  #     - image: circleci/node:14
+
+  #   steps:
+  #     - run:
+  #         name: Start Backend_NodeJS
+  #         command: cd Backend_NodeJS && npm start
+  #     - run:
+  #         name: Start frontend
+  #         command: cd frontend/revive-gallery-app && npm start
 
 
 workflows:
@@ -47,10 +50,12 @@ workflows:
   build_and_deploy:
     jobs:
       - backend
-      - frontend
-      - deploy:
+      - frontend:
           requires:
             - backend
-            - frontend
+      # - deploy:
+      #     requires:
+      #       - backend
+      #       - frontend
 
 
