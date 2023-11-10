@@ -1,12 +1,21 @@
 //server.js
 
 const app = require("./index");
+const socket = require("./socket.js");
+
 const { port } = require("./src/config/index.js");
 
-app.listen(port, (err) => {
-  if (err) {
-    console.log(err);
-    return process.exit(1);
-  }
-  console.log(`Server is running on ${port}`);
+const http = require("http").createServer(app);
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
 });
+socket(io);
+
+http.listen(port, () => {
+  console.log(`Server started at port : ${port}`);
+});
+
+module.exports = app;

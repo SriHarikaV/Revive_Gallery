@@ -1,5 +1,5 @@
 {
-  "name": "travel-diaries-backend",
+  "name": "revive-gallery-backend",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -25,6 +25,7 @@
     "mangodb": "^1.0.0",
     "mongoose": "^6.7.0",
     "morgan": "^1.10.0",
+    "socket.io": "^3.0.3",
     "stripe": "^11.1.0"
   },
   "devDependencies": {
