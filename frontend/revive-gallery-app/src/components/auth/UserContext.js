@@ -1,16 +1,16 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer } from "react";
 
 // Define an initial state for the user
 const initialState = {
-  user: localStorage.getItem('user') || null,
-  token: localStorage.getItem('token') || null, // You can use localStorage to store the token
+  user: JSON.parse(localStorage.getItem("user")) || null,
+  token: JSON.parse(localStorage.getItem("token")) || null, // You can use localStorage to store the token
 };
 
 const UserContext = createContext(initialState);
 
 // Define actions for user authentication
-const SET_USER = 'SET_USER';
-const LOGOUT = 'LOGOUT';
+const SET_USER = "SET_USER";
+const LOGOUT = "LOGOUT";
 
 const userReducer = (state, action) => {
   switch (action.type) {
@@ -37,16 +37,15 @@ const UserProvider = ({ children }) => {
   const setUser = (user, token) => {
     console.log("set user", user, token);
     dispatch({ type: SET_USER, payload: { user, token } });
-    localStorage.setItem('user', user);
-    localStorage.setItem('token', token);
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", JSON.stringify(token));
   };
 
   const logout = () => {
     dispatch({ type: LOGOUT });
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
-
 
   return (
     <UserContext.Provider value={{ ...state, setUser, logout }}>
@@ -58,7 +57,7 @@ const UserProvider = ({ children }) => {
 const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
+    throw new Error("useUser must be used within a UserProvider");
   }
   return context;
 };

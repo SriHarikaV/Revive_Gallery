@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import logoImage from '../../static/images/revive-logo.png';
-import { useUser } from '../auth/UserContext';
-import '../../styles/home/Navbar.css';
-import categories from '../../data/categories';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import logoImage from "../../static/images/revive-logo.png";
+import { useUser } from "../auth/UserContext";
+import "../../styles/home/Navbar.css";
+import categories from "../../data/categories";
 
 const Navbar = () => {
   const { user, token, logout } = useUser();
@@ -42,18 +42,24 @@ const Navbar = () => {
             <ul className="dropdown-content">
               {categories.map((category) => (
                 <li key={category.name}>
-                  <Link to={`/products?categories=${category.name}`}>{category.name}</Link>
+                  <Link to={`/products?categories=${category.name}`}>
+                    {category.name}
+                  </Link>
                 </li>
               ))}
             </ul>
           )}
         </li>
-
+        
         {user && token ? (
             <li>
               <Link to="/addproduct">Add Product</Link>
             </li>
           ) : null}
+
+        <li>
+          <Link to="/messages">Messages</Link>
+        </li>
 
         {user && token ? (
           <li className="dropdown">
