@@ -1,14 +1,3 @@
-# version: 2.1
-# jobs:
-#   build:
-#     docker:
-#       - image: circleci/node:14  
-
-#     steps:
-#       - checkout  # Check out your source code
-#       - run:
-#           name: Print Hello, UNIV New # testing the setup
-#           command: echo "Hello, World"
 version: 2.1
 
 jobs:
@@ -64,41 +53,17 @@ jobs:
           name: Start Frontend
           command: cd frontend/revive-gallery-app && npm start
 
-workflows:
-  version: 2
-  build_and_deploy:
-    jobs:
-      # - backend
-      - frontend:
-      #     requires:
-      #       - backend
-      - deploy:
-          requires:
-            # - backend
-            - frontend
-
-# version: 2.1
-# orbs:
-#   node: circleci/node@5.0.2
-# jobs:
-#   start-reactjs:
-#     steps:
-#       - checkout
-#       - run:
-#           name: Install Frontend Dependencies
-#           command: npm install
-#       - run:
-#           name: Start ReactJS
-#           command: npm start
-
-
 # workflows:
 #   version: 2
 #   build_and_deploy:
 #     jobs:
-#       - build_and_push:
-#         filters:
-#           branches:
-#             only: main
+#       # - backend
+#       - frontend:
+#       #     requires:
+#       #       - backend
+#       - deploy:
+#           requires:
+#             # - backend
+#             - frontend
 
 
