@@ -25,7 +25,7 @@ jobs:
           at: ~/ReviveGallery
       - run:
           name: Start Backend_NodeJS
-          command: cd Backend_NodeJS && npm start
+          command: npm start
 
 workflows:
   version: 2
