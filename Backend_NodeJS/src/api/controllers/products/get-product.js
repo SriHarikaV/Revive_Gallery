@@ -13,6 +13,8 @@ module.exports = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in fetching products:", error.message);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ error: "Internal Server Error", message: error.message });
   }
 };

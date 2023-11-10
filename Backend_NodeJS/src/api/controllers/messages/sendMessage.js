@@ -1,5 +1,17 @@
 const { ChatRoom } = require("../../../models/index.js");
 
+// Decorator function to handle common error handling logic
+const withErrorHandling = (originalFunction) => {
+  return async (...args) => {
+    try {
+      return await originalFunction(...args);
+    } catch (error) {
+      console.error(error);
+      return { error: "Internal server error." };
+    }
+  };
+};
+
 const sendMessage = async (req, res) => {
   const { sender, chatId, message } = req.body;
 
@@ -36,5 +48,8 @@ const sendMessageSocket = async (body) => {
 
   return true;
 };
-exports.sendMessage = sendMessage;
+
+const sendMessageWithHandling = withErrorHandling(sendMessage);
+
+exports.sendMessage = sendMessageWithHandling;
 exports.sendMessageSocket = sendMessageSocket;

@@ -22,7 +22,7 @@ module.exports = function (app) {
 
   // Parse URL-encoded form data
   app.use(express.urlencoded({ extended: false }));
-  
+
   app.use(morgan("dev"));
   app.use(helmet());
   app.use(compression());

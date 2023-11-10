@@ -15,7 +15,7 @@ module.exports = (io) => {
         if (status)
           socket.to(chatId).emit("receiveMessage", { chatId, user, message });
       } catch (error) {
-        console.log(error);
+        //console.log(error);
         if (error) return callback(error);
       }
       callback();
