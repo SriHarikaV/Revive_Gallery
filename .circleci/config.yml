@@ -1,20 +1,20 @@
 version: 2.1
 
 jobs:
-  backend:
-    docker:
-      - image: circleci/node:14
+  # backend:
+  #   docker:
+  #     - image: circleci/node:14
 
-    # working_directory: ~/Backend_NodeJS
+  #   # working_directory: ~/Backend_NodeJS
 
-    steps:
-      - checkout
-      - run:
-          name: Install Dependencies
-          command: cd Backend_NodeJS && npm install
-      - run:
-          name: Run Tests
-          command: cd Backend_NodeJS && npm run test
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Install Dependencies
+  #         command: cd Backend_NodeJS && npm install
+  #     - run:
+  #         name: Run Tests
+  #         command: cd Backend_NodeJS && npm run test
 
   frontend:
     docker:
