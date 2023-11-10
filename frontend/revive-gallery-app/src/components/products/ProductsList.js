@@ -41,7 +41,7 @@ const ProductsList = () => {
         return response.json();
       })
       .then(async (data) => {
-        console.log("Received data:", data);
+        console.log('Products List:', data);
         setProducts(data.products);
       })
       .catch((error) => {
@@ -79,7 +79,10 @@ const ProductsList = () => {
 
             <Link to={`/products/details?id=${product._id}`}>
               <div className="product-image">
-                <img src={product.images[0]} alt={product.description} />
+              <img
+                  src={product.images[0]} 
+                  alt={product.description}
+                />
               </div>
             </Link>
             {!!user && product.owner._id !== user._id && (

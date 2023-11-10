@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from "react-router-dom";
 import ProductForm from '../components/products/ProductForm';
 
 test('renders the product form', () => {

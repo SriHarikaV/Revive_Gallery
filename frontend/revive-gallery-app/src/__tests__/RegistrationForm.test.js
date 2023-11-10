@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom"; // Import MemoryRouter
+import { MemoryRouter } from "react-router-dom";
 import RegistrationForm from "../components/auth/RegistrationForm";
 
 test("displays password validation message for invalid password", () => {

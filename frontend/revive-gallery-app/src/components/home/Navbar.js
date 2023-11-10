@@ -6,7 +6,7 @@ import "../../styles/home/Navbar.css";
 import categories from "../../data/categories";
 
 const Navbar = () => {
-  const { user, token } = useUser();
+  const { user, token, logout } = useUser();
   const navigate = useNavigate();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -31,9 +31,11 @@ const Navbar = () => {
         <li>
           <Link to="/">Home</Link>
         </li>
+
         <li>
           <Link to="/products">Products</Link>
         </li>
+
         <li className="dropdown">
           <span onClick={toggleDropdown}>Categories</span>
           {isDropdownOpen && (
@@ -48,6 +50,7 @@ const Navbar = () => {
             </ul>
           )}
         </li>
+        
         {user && token ? (
             <li>
               <Link to="/addproduct">Add Product</Link>
