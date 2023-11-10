@@ -12,46 +12,43 @@
 version: 2.1
 
 jobs:
-  backend:
-    docker:
-      - image: circleci/node:14
-
-    # working_directory: ~/Backend_NodeJS
-
-    steps:
-      - checkout
-      - run:
-          name: Install Dependencies
-          command: cd Backend_NodeJS && npm install
-      - run:
-          name: Run Tests
-          command: cd Backend_NodeJS && npm run test
-      - persist_to_workspace:
-          root: ~/ReviveGallery
-          paths:
-            - Backend_NodeJS
-
-  # frontend:
+  # backend:
   #   docker:
   #     - image: circleci/node:14
 
-  #   working_directory: ~/ReviveGallery/Frontend
+  #   # working_directory: ~/Backend_NodeJS
 
   #   steps:
   #     - checkout
   #     - run:
   #         name: Install Dependencies
-  #         command: npm install
+  #         command: cd Backend_NodeJS && npm install
   #     - run:
   #         name: Run Tests
-  #         command: npm test
-  #     - run:
-  #         name: Start Frontend
-  #         command: npm start
+  #         command: cd Backend_NodeJS && npm run test
   #     - persist_to_workspace:
   #         root: ~/ReviveGallery
   #         paths:
-  #           - Frontend
+  #           - Backend_NodeJS
+
+  frontend:
+    docker:
+      - image: circleci/node:14
+
+    # working_directory: ~/ReviveGallery/Frontend
+
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: cd frontend/revive-gallery-app && npm install
+      - run:
+          name: Run Tests
+          command: cd frontend/revive-gallery-app && npm test
+      - persist_to_workspace:
+          root: ~/ReviveGallery
+          paths:
+            - Frontend
 
   deploy:
     docker:
@@ -60,25 +57,25 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/ReviveGallery
-      - run:
-          name: Start Backend_NodeJS
-          command: cd Backend_NodeJS && npm start
       # - run:
-      #     name: Start Frontend
-      #     command: cd Frontend && npm start
+      #     name: Start Backend_NodeJS
+      #     command: cd Backend_NodeJS && npm start
+      - run:
+          name: Start Frontend
+          command: cd frontend/revive-gallery-app && npm start
 
 workflows:
   version: 2
   build_and_deploy:
     jobs:
-      - backend
-      # - frontend:
+      # - backend
+      - frontend:
       #     requires:
       #       - backend
       - deploy:
           requires:
-            - backend
-            # - frontend
+            # - backend
+            - frontend
 
 # version: 2.1
 # orbs:
