@@ -24,10 +24,10 @@ jobs:
       - checkout
       - run:
           name: Install Dependencies
-          command: cd.. && cd frontend/revive-gallery-app && npm install
+          command: cd frontend/revive-gallery-app && npm install
       - run:
           name: Run Tests
-          command: cd.. && cd frontend/revive-gallery-app && npm test
+          command: cd frontend/revive-gallery-app && npm test
 
   # deploy:
   #   docker:
