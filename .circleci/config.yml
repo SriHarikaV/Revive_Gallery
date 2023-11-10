@@ -9,33 +9,91 @@
 #       - run:
 #           name: Print Hello, UNIV New # testing the setup
 #           command: echo "Hello, World"
-
 version: 2.1
 
 jobs:
-  build_and_push:
+  backend:
     docker:
-      - image: cimg/python:3.8
+      - image: circleci/node:14
+
+    working_directory: ~/ReviveGallery/Backend_NodeJS
+
     steps:
       - checkout
-      - setup_remote_docker:
-        version: 19.03.13
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Run Tests
+          command: npm run test
+      - persist_to_workspace:
+          root: ~/ReviveGallery
+          paths:
+            - Backend_NodeJS
 
-    - run:
-      name: Build Docker Image
-      command: |
-      docker build -t $DOCKERHUB_USERNAME/myapp:${CIRCLE_SHA1} .
+  # frontend:
+  #   docker:
+  #     - image: circleci/node:14
 
-    - run:
-      name: Authenticate with Docker Hub
-      command: |
-        echo "$DOCKERHUB_PASS" | docker login --username $DOCKERHUB_USERNAME --passwor
-      d-stdin
+  #   working_directory: ~/ReviveGallery/Frontend
 
-    - run:
-      name: Push Docker Image to Docker Hub
-      command: |
-        docker push $DOCKERHUB_USERNAME/myapp:${CIRCLE_SHA1}
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Install Dependencies
+  #         command: npm install
+  #     - run:
+  #         name: Run Tests
+  #         command: npm test
+  #     - run:
+  #         name: Start Frontend
+  #         command: npm start
+  #     - persist_to_workspace:
+  #         root: ~/ReviveGallery
+  #         paths:
+  #           - Frontend
+
+  deploy:
+    docker:
+      - image: circleci/node:14
+
+    steps:
+      - attach_workspace:
+          at: ~/ReviveGallery
+      - run:
+          name: Start Backend_NodeJS
+          command: cd Backend_NodeJS && npm start
+      # - run:
+      #     name: Start Frontend
+      #     command: cd Frontend && npm start
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - backend
+      # - frontend:
+      #     requires:
+      #       - backend
+      - deploy:
+          requires:
+            - backend
+            # - frontend
+
+# version: 2.1
+# orbs:
+#   node: circleci/node@5.0.2
+# jobs:
+#   start-reactjs:
+#     steps:
+#       - checkout
+#       - run:
+#           name: Install Frontend Dependencies
+#           command: npm install
+#       - run:
+#           name: Start ReactJS
+#           command: npm start
+
 
 workflows:
   version: 2
