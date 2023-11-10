@@ -31,6 +31,8 @@ module.exports = async (req, res) => {
     return res.status(200).json({ product });
   } catch (error) {
     console.error("Error in creating product:", error.message);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ error: "Internal Server Error", message: error.message });
   }
 };

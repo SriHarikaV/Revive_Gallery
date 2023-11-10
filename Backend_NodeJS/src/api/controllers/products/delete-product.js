@@ -22,6 +22,8 @@ module.exports = async (req, res) => {
       .json({ message: "Product deleted successfully", deletedProduct });
   } catch (error) {
     console.error("Error in deleting product:", error.message);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res
+      .status(500)
+      .json({ error: "Internal Server Error", message: error.message });
   }
 };
