@@ -91,7 +91,7 @@ const ProductsList = () => {
                 Chat With Seller
               </Button>
             )}
-            <div className="product-info">
+            <div className="product-list-info">
               <h2>{product.title}</h2>
               <p>${product.price}</p>
             </div>

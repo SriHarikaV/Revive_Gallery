@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoImage from "../../static/images/revive-logo.png";
 import { useUser } from "../auth/UserContext";
 import "../../styles/home/Navbar.css";
@@ -7,10 +7,17 @@ import categories from "../../data/categories";
 
 const Navbar = () => {
   const { user, token } = useUser();
+  const navigate = useNavigate();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    // Redirect to the home page after logout
+    navigate('/');
   };
 
   return (
@@ -42,15 +49,41 @@ const Navbar = () => {
           )}
         </li>
         {user && token ? (
-          <>
             <li>
               <Link to="/addproduct">Add Product</Link>
             </li>
-            <li>
-              <Link to="/messages">Messages</Link>
-            </li>
-          </>
-        ) : null}
+          ) : null}
+
+        <li>
+          <Link to="/messages">Messages</Link>
+        </li>
+
+        {user && token ? (
+          <li className="dropdown">
+            <span onClick={toggleDropdown}>User Profile</span>
+            {isDropdownOpen && (
+              <ul className="dropdown-content">
+                <li>
+                  <Link to="/user/trustworthiness">Trustworthiness: 0/10</Link>
+                </li>
+                <li>
+                  <Link to="/user/wishlist">Wishlist</Link>
+                </li>
+                <li>
+                  <Link to="/user/cart">Cart</Link>
+                </li>
+                <li>
+                  <button onClick={handleLogout}>Logout</button>
+                </li>
+              </ul>
+            )}
+          </li>
+        ): 
+        (<li>
+          <Link to="/login">Sign in/</Link>
+          <Link to="/register">Sign up</Link>
+        </li>)
+        }
       </ul>
     </nav>
   );
