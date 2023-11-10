@@ -15,10 +15,6 @@ jobs:
       - run:
           name: Run Tests
           command: cd Backend_NodeJS && npm run test
-      - persist_to_workspace:
-          root: ~/ReviveGallery
-          paths:
-            - Backend_NodeJS
 
   deploy:
     docker:
