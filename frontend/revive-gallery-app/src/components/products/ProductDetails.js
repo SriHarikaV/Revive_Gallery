@@ -10,7 +10,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState({});
 
   useEffect(() => {
-    let productUrl = `http://localhost:8080/api/product?_id=${productId}`;
+let productUrl = `http://localhost:8080/api/product?_id=${productId}`;
 
     // Fetch the product with given productId from the backend API
     fetch(productUrl, {
@@ -44,7 +44,7 @@ const ProductDetails = () => {
         <p className="product-status">Available</p>
         <div className="title-price">
           <h3 className="product-title">{product.title}</h3>
-          <h3 className="product-price">${product.price}</h3>
+    <h3 className="product-price">${product.price}</h3>
         </div>
         <p className="product-description">{product.description}</p>
       </div>
@@ -52,7 +52,7 @@ const ProductDetails = () => {
         <ImageGallery images={product.images} />
       </div>
       <div className="owner-info">
-        <div>To do owner name</div>
+      <div>To do owner name</div>
         <button>Chat with Owner</button>
         <button>Buy this online</button>
       </div>

@@ -7,7 +7,7 @@ import categories from "../../data/categories";
 
 const Navbar = () => {
   const { user, token, logout } = useUser();
-  const navigate = useNavigate();
+const navigate = useNavigate();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -50,17 +50,19 @@ const Navbar = () => {
             </ul>
           )}
         </li>
-        
+
         {user && token ? (
-            <li>
-              <Link to="/addproduct">Add Product</Link>
-            </li>
-          ) : null}
+                    <>
+                    <li>
+                      <Link to="/addproduct">Add Product</Link>
+                    </li>
+                    <li>
+                      <Link to="/messages">Messages</Link>
+                    </li>
+                  </>
+) : null}
 
-        <li>
-          <Link to="/messages">Messages</Link>
-        </li>
-
+          
         {user && token ? (
           <li className="dropdown">
             <span onClick={toggleDropdown}>User Profile</span>

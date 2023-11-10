@@ -7,7 +7,7 @@
 
 .product-item {
   width: 260px;
-  height: 280px; 
+height: 280px; 
   margin: 10px;
   text-align: center;
   border: 1px solid #ccc;
@@ -21,7 +21,7 @@
 
 .product-image {
   width: 100%;
-  height: 220px; 
+  height: 220px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,4 +51,7 @@
 .product-list-info p {
   color: #0c0b0b;
   margin: 0; /* Remove margin to align with title */
+}
+.chat_seller {
+  margin-bottom: 5px;
 }
