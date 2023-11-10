@@ -1,117 +1,54 @@
-.product-details {
+.product-container {
   display: flex;
-  justify-content: space-between;
-  padding: 20px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 30px;
 }
 
-.product-info {
-  max-width: 33%;
-  margin-left: 50px;
-  display: flex; 
-  flex-direction: column;
-}
-
-.product-status {
-  font-weight: bold;
-  background-color: #ff5722;
-  padding: 0px 6px 0px 6px; 
-  border: 2px solid #d84315;
-  border-radius: 4px; 
-  font-size: 16px; 
+.product-item {
+  width: 260px;
+  height: 280px; 
+  margin: 10px;
   text-align: center;
-}
-
-.title-price {
-  display: flex;
-  justify-content: space-between;
-  width: 400px;
-  padding: 10px 5px 5px 5px;
-  border: 1px solid #b3b1b0;
-}
-
-.product-title {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.product-price {
-  font-size: 24px;
-}
-
-.product-description {
-  width: 400px;
-  padding: 10px 0px 20px 10px;
-  border: 1px solid #b0b2b3;
-}
-
-
-.image-gallery {
-  flex: 1;
-  max-width: 33%; 
-  margin-left: 20px; 
-  position: relative;
-}
-
-.image-container {
-  width: 450px; 
-  height: 450px; 
-  overflow: hidden;
   border: 1px solid #ccc;
-}
-
-.image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.image-gallery .navigation {
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 5px;
-  width: 450px;
-}
-
-.image-gallery .navigation button {
-  background-color: rgb(66, 66, 179);
   border-radius: 10px;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: color 0.3s;
-  &:hover {
-    background-color: rgb(71, 71, 245);
-  }
-  &:disabled {
-    background-color: rgb(159, 159, 207);
-  }
-}
-
-.owner-info {
-  flex: 1;
-  max-width: 33%;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* Space between title and price */
+  padding: 7px; /* Add padding for spacing */
+}
+
+.product-image {
+  width: 100%;
+  height: 220px; 
+  display: flex;
+  justify-content: center;
   align-items: center;
-  background-color: rgb(232, 247, 247);
-  margin-left: 80px;
+  overflow: hidden; /* Ensure images stay within the fixed height */
 }
 
-.owner-info > div {
-  margin-bottom: 10px;
+.product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover; /* Adjust the value to control how the image fits within the fixed height */
 }
 
-.owner-info button {
-  background-color: rgb(66, 66, 179);
-  border-radius: 10px;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-top: 10px;
-  &:hover {
-    background-color: rgb(71, 71, 245);
-  }
+.product-list-info {
+  background-color: rgb(250, 240, 227);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px; /* Add padding for spacing */
+}
+
+.product-list-info h2 {
+  font-size: 1rem; /* Adjust font size as needed */
+  color: #0c0b0b;
+  margin: 0; /* Remove margin to align with price */
+}
+
+.product-list-info p {
+  color: #0c0b0b;
+  margin: 0; /* Remove margin to align with title */
 }

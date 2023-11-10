@@ -5,9 +5,9 @@ import RegistrationForm from "../components/auth/RegistrationForm";
 
 test("displays password validation message for invalid password", () => {
     const { getByText} =  render(
-    <MemoryRouter> // MemoryRouter mimics BrowserRouter or HashRouter
-        <RegistrationForm />
-    </MemoryRouter>
+        <MemoryRouter> // MemoryRouter mimics BrowserRouter or HashRouter
+            <RegistrationForm />
+        </MemoryRouter>
     );
 
     const passwordInput = screen.getByPlaceholderText('Password');

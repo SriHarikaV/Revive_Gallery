@@ -79,7 +79,7 @@ const ProductsList = () => {
 
             <Link to={`/products/details?id=${product._id}`}>
               <div className="product-image">
-              <img
+                <img
                   src={product.images[0]} 
                   alt={product.description}
                 />
