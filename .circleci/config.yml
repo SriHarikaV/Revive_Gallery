@@ -34,8 +34,6 @@ jobs:
       - image: circleci/node:14
 
     steps:
-      - attach_workspace:
-          at: ~/ReviveGallery
       - run:
           name: Start Backend_NodeJS
           command: cd Backend_NodeJS && npm start
