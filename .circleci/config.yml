@@ -53,17 +53,17 @@ jobs:
           name: Start Frontend
           command: cd frontend/revive-gallery-app && npm start
 
-# workflows:
-#   version: 2
-#   build_and_deploy:
-#     jobs:
-#       # - backend
-#       - frontend:
-#       #     requires:
-#       #       - backend
-#       - deploy:
-#           requires:
-#             # - backend
-#             - frontend
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      # - backend
+      - frontend:
+      #     requires:
+      #       - backend
+      - deploy:
+          requires:
+            # - backend
+            - frontend
 
 
