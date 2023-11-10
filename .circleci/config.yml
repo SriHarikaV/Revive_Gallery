@@ -16,24 +16,38 @@ jobs:
           name: Run Tests
           command: cd Backend_NodeJS && npm run test
 
-  deploy:
+  frontend:
     docker:
       - image: circleci/node:14
 
     steps:
-      - attach_workspace:
-          at: ~/ReviveGallery
+      - checkout
       - run:
-          name: Start Backend_NodeJS
-          command: npm start
+          name: Install Dependencies
+          command: cd.. && cd frontend/revive-gallery-app && npm install
+      - run:
+          name: Run Tests
+          command: cd.. && cd frontend/revive-gallery-app && npm test
+
+  # deploy:
+  #   docker:
+  #     - image: circleci/node:14
+
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/ReviveGallery
+  #     - run:
+  #         name: Start Backend_NodeJS
+  #         command: npm start
+
 
 workflows:
   version: 2
   build_and_deploy:
     jobs:
       - backend
-      - deploy:
-          requires:
-            - backend
+      # - deploy:
+      #     requires:
+      #       - backend
 
 
