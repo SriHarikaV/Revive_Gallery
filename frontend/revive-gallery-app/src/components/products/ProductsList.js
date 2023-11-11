@@ -5,53 +5,41 @@ import { useUser } from "../auth/UserContext";
 import { Button, Form, Modal } from "react-bootstrap";
 import { createChatRoom } from "../messages/services";
 
-const ProductsList = () => {
-  const { user, token } = useUser();
+// Discount decorator
+const withDiscount = (WrappedComponent) => {
+  return ({ products, ...props }) => {
+    const productsWithDiscount = products.map((product) => {
+      // Apply a 10% discount for products with a price greater than $500
+      const discountThreshold = 500;
+      const discountPercentage = 5;
 
-  const location = useLocation();
+      const discountedPrice =
+        product.price > discountThreshold
+          ? product.price - (product.price * discountPercentage) / 100
+          : product.price;
+
+      return {
+        ...product,
+        discountedPrice,
+      };
+    });
+
+    return <WrappedComponent products={productsWithDiscount} {...props} />;
+  };
+};
+
+const DecoratedProductsList = withDiscount(ProductsList);
+
+const ProductsList = ({ products }) => {
+  const { user } = useUser();
   const navigate = useNavigate();
-  const searchParams = new URLSearchParams(location.search);
-  const categoriesParam = searchParams.get("categories");
-
-  const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
-  const [showMsg, setShowMdg] = useState(false);
+  const [showMsg, setShowMsg] = useState(false);
   const [product, setProduct] = useState(null);
 
-  useEffect(() => {
-    let productsUrl;
-    if (categoriesParam) {
-      productsUrl = `http://localhost:8080/api/product?categories=${categoriesParam}`;
-    } else {
-      productsUrl = `http://localhost:8080/api/product`;
-    }
-
-    // Fetch all the products from the backend API
-    fetch(productsUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Request failed with status: " + response.status);
-        }
-        return response.json();
-      })
-      .then(async (data) => {
-        console.log('Products List:', data);
-        setProducts(data.products);
-      })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-        setError(error.message);
-      });
-  }, [categoriesParam]);
-
   const handleChat = (product) => {
-    setShowMdg(true);
+    setShowMsg(true);
     setProduct(product);
   };
 
@@ -63,11 +51,13 @@ const ProductsList = () => {
       })
       .catch((err) => console.log(err));
   };
+
   const handleMsgChange = (e) => {
     e.preventDefault();
     setMessage(e.target.value);
   };
-  const handleClose = () => setShowMdg(false);
+
+  const handleClose = () => setShowMsg(false);
 
   return (
     <div>
@@ -79,12 +69,10 @@ const ProductsList = () => {
 
             <Link to={`/products/details?id=${product._id}`}>
               <div className="product-image">
-                <img
-                  src={product.images[0]} 
-                  alt={product.description}
-                />
+                <img src={product.images[0]} alt={product.description} />
               </div>
             </Link>
+
             {!!user && product.owner._id !== user._id && (
               <Button
                 size="sm"
@@ -94,13 +82,21 @@ const ProductsList = () => {
                 Chat With Seller
               </Button>
             )}
+
             <div className="product-list-info">
               <h2>{product.title}</h2>
-              <p>${product.price}</p>
+              <p>
+                {product.discountedPrice && (
+                  <span className="original-price">
+                    ${product.discountedPrice}
+                  </span>
+                )}
+              </p>
             </div>
           </div>
         ))}
       </div>
+
       <Modal show={showMsg} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Message</Modal.Title>
@@ -135,4 +131,4 @@ const ProductsList = () => {
   );
 };
 
-export default ProductsList;
+export default DecoratedProductsList;
