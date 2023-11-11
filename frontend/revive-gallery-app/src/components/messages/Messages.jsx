@@ -13,7 +13,6 @@ import "./messages.css";
 import { getUserConversations } from "./services";
 import { useUser } from "../auth/UserContext";
 import { io } from "socket.io-client";
-
 let socket;
 
 function Messages() {
