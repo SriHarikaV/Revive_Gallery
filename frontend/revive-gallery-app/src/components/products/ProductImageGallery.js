@@ -1,29 +1,40 @@
 import React, { useState } from 'react';
 
+const Image = ({ src, alt }) => (
+  <div className="image-container">
+    <img src={src} alt={alt} />
+  </div>
+);
+
 const ImageGallery = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const nextSlide = () => {
-    setCurrentIndex((currentIndex + 1) % images.length);
+  const createIterator = () => {
+    let index = 0;
+
+    const next = () => {
+      index = (index + 1) % images.length;
+      return images[index];
+    };
+
+    const prev = () => {
+      index = (index - 1 + images.length) % images.length;
+      return images[index];
+    };
+
+    return { next, prev };
   };
 
-  const prevSlide = () => {
-    setCurrentIndex((currentIndex - 1 + images.length) % images.length);
-  };
+  const iterator = createIterator();
 
   return (
     <div className="image-gallery">
-      <div className="image-container">
-        <img 
-          src={images[currentIndex]} 
-          alt={`Image ${currentIndex + 1}`}
-        />
-      </div>
+      <Image src={images[currentIndex]} alt={`Image ${currentIndex + 1}`} />
       <div className="navigation">
-        <button onClick={prevSlide} disabled={currentIndex === 0}>
+        <button onClick={() => setCurrentIndex(iterator.prev())} disabled={currentIndex === 0}>
           Prev
         </button>
-        <button onClick={nextSlide} disabled={currentIndex === images.length - 1}>
+        <button onClick={() => setCurrentIndex(iterator.next())} disabled={currentIndex === images.length - 1}>
           Next
         </button>
       </div>
