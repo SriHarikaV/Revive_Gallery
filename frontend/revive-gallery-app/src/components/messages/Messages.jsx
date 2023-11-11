@@ -175,6 +175,7 @@ function Messages() {
                   style={{
                     overflowY: "scroll",
                     maxHeight: "75vh",
+                    minHeight: "75vh",
                   }}
                 >
                   {selected.chats.conversation.map((x) => (
