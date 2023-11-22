@@ -5,31 +5,6 @@ import { useUser } from "../auth/UserContext";
 import { Button, Form, Modal } from "react-bootstrap";
 import { createChatRoom } from "../messages/services";
 
-// Discount decorator
-const withDiscount = (WrappedComponent) => {
-  return ({ products, ...props }) => {
-    const productsWithDiscount = products.map((product) => {
-      // Apply a 10% discount for products with a price greater than $500
-      const discountThreshold = 500;
-      const discountPercentage = 5;
-
-      const discountedPrice =
-        product.price > discountThreshold
-          ? product.price - (product.price * discountPercentage) / 100
-          : product.price;
-
-      return {
-        ...product,
-        discountedPrice,
-      };
-    });
-
-    return <WrappedComponent products={productsWithDiscount} {...props} />;
-  };
-};
-
-const DecoratedProductsList = withDiscount(ProductsList);
-
 const ProductsList = ({ products }) => {
   const { user } = useUser();
   const navigate = useNavigate();
@@ -130,5 +105,69 @@ const ProductsList = ({ products }) => {
     </div>
   );
 };
+
+// Discount decorator
+const withDiscount = (WrappedComponent) => {
+  return () => {
+    const { token } = useUser();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const categoriesParam = searchParams.get("categories");
+
+    const [products, setProducts] = useState([]);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+      let productsUrl;
+      if (categoriesParam) {
+        productsUrl = `http://localhost:8080/api/product?categories=${categoriesParam}`;
+      } else {
+        productsUrl = `http://localhost:8080/api/product`;
+      }
+
+      // Fetch all the products from the backend API
+      fetch(productsUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Assuming you use token-based authentication
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Request failed with status: " + response.status);
+          }
+          return response.json();
+        })
+        .then(async (data) => {
+          console.log("Products List:", data);
+          setProducts(data.products || []);
+        })
+        .catch((error) => {
+          console.error("Error fetching products:", error);
+          setError(error.message);
+        });
+    }, [categoriesParam]);
+
+    const productsWithDiscount = products?.map((product) => {
+      // Apply a 10% discount for products with a price greater than $500
+      const discountThreshold = 500;
+      const discountPercentage = 5;
+      const discountedPrice =
+        product.price > discountThreshold
+          ? product.price - (product.price * discountPercentage) / 100
+          : product.price;
+
+      return {
+        ...product,
+        discountedPrice,
+      };
+    });
+
+    return <WrappedComponent products={productsWithDiscount} />;
+  };
+};
+
+const DecoratedProductsList = withDiscount(ProductsList);
 
 export default DecoratedProductsList;
