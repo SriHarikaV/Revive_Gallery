@@ -7,7 +7,7 @@ import categories from "../../data/categories";
 
 const Navbar = () => {
   const { user, token, logout } = useUser();
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -56,33 +56,46 @@ const navigate = useNavigate();
                     <li>
                       <Link to="/addproduct">Add Product</Link>
                     </li>
+
                     <li>
                       <Link to="/messages">Messages</Link>
                     </li>
                   </>
-) : null}
+        ) : null}
 
           
         {user && token ? (
-          <li className="dropdown">
-            <span onClick={toggleDropdown}>User Profile</span>
-            {isDropdownOpen && (
-              <ul className="dropdown-content">
-                <li>
-                  <Link to="/user/trustworthiness">Trustworthiness: 0/10</Link>
-                </li>
-                <li>
-                  <Link to="/user/wishlist">Wishlist</Link>
-                </li>
-                <li>
-                  <Link to="/user/cart">Cart</Link>
-                </li>
-                <li>
-                  <button onClick={handleLogout}>Logout</button>
-                </li>
-              </ul>
-            )}
-          </li>
+          <>
+            <li className="dropdown">
+              <span onClick={toggleDropdown}>User Profile</span>
+              {isDropdownOpen && (
+                <ul className="dropdown-content">
+                  <li>
+                    <Link to="/user/trustworthiness">Trustworthiness: 0/10</Link>
+                  </li>
+                  <li>
+                    <Link to="/products">My Products</Link>
+                  </li>
+                  <li>
+                    <Link to="/user/wishlist">Wishlist</Link>
+                  </li>
+                  <li>
+                    <Link to="/user/cart">Cart</Link>
+                  </li>
+                  <li>
+                    <button onClick={handleLogout}>Logout</button>
+                  </li>
+                </ul>
+              )}
+            </li>
+
+            {/* adding space between 'User Profile' and 'Hi ..' */}
+            <li style={{ marginRight: "5px"}}></li> 
+
+            <li>
+              <p>Hi {user.firstName.toUpperCase()}</p>
+            </li>
+          </>
         ): 
         (<li>
           <Link to="/login">Sign in/</Link>
