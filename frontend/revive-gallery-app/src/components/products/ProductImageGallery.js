@@ -27,7 +27,7 @@ const ImageGallery = ({ images }) => {
   const iterator = createIterator();
 
   return (
-    <div className="image-gallery">
+    <div>
       <Image src={images[currentIndex]} alt={`Image ${currentIndex + 1}`} />
       <div className="navigation">
         <button onClick={() => iterator.prev()} disabled={currentIndex === 0}>

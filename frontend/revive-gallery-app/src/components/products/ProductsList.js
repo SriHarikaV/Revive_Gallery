@@ -4,6 +4,8 @@ import "../../styles/products/ProductsList.css";
 import { useUser } from "../auth/UserContext";
 import { Button, Form, Modal } from "react-bootstrap";
 import { createChatRoom } from "../messages/services";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const ProductsList = ({ products }) => {
   const { user } = useUser();
@@ -12,6 +14,7 @@ const ProductsList = ({ products }) => {
   const [message, setMessage] = useState("");
   const [showMsg, setShowMsg] = useState(false);
   const [product, setProduct] = useState(null);
+  const [isWishlist, setIsWishlist] = useState(false);
 
   const handleChat = (product) => {
     setShowMsg(true);
@@ -40,8 +43,13 @@ const ProductsList = ({ products }) => {
       <div className="product-container">
         {products.map((product) => (
           <div key={product._id} className="product-item">
-            <p>{product.owner.email}</p>
-
+            {/* <p>{product.owner.email}</p> */}
+            <button className="product-wishlist"
+              onClick={() => setIsWishlist(!isWishlist)}
+              style={{ backgroundColor: `rgba(0, 0, 0, 0)`, border: 'none' }}
+            >
+              <FontAwesomeIcon icon={faHeart} color={isWishlist ? 'magenta' : 'gray'} />
+            </button>
             <Link to={`/products/details?id=${product._id}`}>
               <div className="product-image">
                 <img src={product.images[0]} alt={product.description} />
