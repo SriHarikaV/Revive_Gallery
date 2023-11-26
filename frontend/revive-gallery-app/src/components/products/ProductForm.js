@@ -5,8 +5,10 @@ import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useNavigate } from "react-router-dom";
 import categories from '../../data/categories';
+import { useUser } from "../auth/UserContext";
 
 function ProductForm() {
+  const { user, token } = useUser();
   const navigate = useNavigate();
   const [product, setProduct] = useState({
     title: '',
@@ -14,7 +16,7 @@ function ProductForm() {
     price: '',
     categories: [], // array to store selected categories
     images: [], // array to store selected images/image urls
-    owner: '653f0b1b7aa28e72cb263133',
+    owner: user._id,
   });
 
   const handleInputChange = (e) => {
