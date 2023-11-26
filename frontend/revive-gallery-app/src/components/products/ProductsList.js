@@ -87,7 +87,7 @@ const ProductsList = ({ products, wishlistProductIds, setWishlistProductIds  }) 
                 <img src={product.images[0]} alt={product.description} />
               </div>
             </Link>
-
+            {console.log(product.owner._id, user._id)}
             {!!user && product.owner._id !== user._id && (
               <Button
                 size="sm"
@@ -155,6 +155,8 @@ const withDiscount = (WrappedComponent) => {
     const categoriesParam = searchParams.get("categories");
     const ownerId = searchParams.get("owner");
     const userId = searchParams.get("userId");
+    const isWishlistRoute = location.pathname.includes("/products/wishlist");
+    const isCartRoute = location.pathname.includes("/products/cart");
 
     const [products, setProducts] = useState([]);
     const [wishlistProductIds, setWishlistProductIds] = useState([]);
@@ -166,8 +168,10 @@ const withDiscount = (WrappedComponent) => {
         productsUrl = `http://localhost:8080/api/product?categories=${categoriesParam}`;
       } else if(ownerId){
         productsUrl = `http://localhost:8080/api/product?owner=${ownerId}`;
-      }else if(userId){
+      }else if(isWishlistRoute && userId){
         productsUrl = `http://localhost:8080/api/wishlist?userId=${userId}`;
+      }else if(isCartRoute && userId){
+        productsUrl = `http://localhost:8080/api/cart?userId=${userId}`;
       }else {
         productsUrl = `http://localhost:8080/api/product`;
       }
@@ -188,7 +192,13 @@ const withDiscount = (WrappedComponent) => {
         })
         .then(async (data) => {
           console.log("Products List:", data);
-          setProducts(data.products || []);
+          if(isWishlistRoute && userId){
+            setProducts(data.wishlist || []);
+          }else if(isCartRoute && userId){
+            setProducts(data.cart || []);
+          }else{
+            setProducts(data.products || []);
+          }
         })
         .catch((error) => {
           console.error("Error fetching products:", error);
@@ -205,13 +215,13 @@ const withDiscount = (WrappedComponent) => {
                 Authorization: `Bearer ${token}`,
               },
             });
-    
+
             if (!response.ok) {
               throw new Error("Failed to fetch wishlist");
             }
-    
+
             const wishlistData = await response.json();
-            setWishlistProductIds(wishlistData.products.map((product) => product._id));
+            setWishlistProductIds(wishlistData.wishlist.map((product) => product._id));
           } catch (error) {
             setError(error.message);
           }
@@ -219,7 +229,7 @@ const withDiscount = (WrappedComponent) => {
     
         fetchWishlist();
 
-    }, [categoriesParam, ownerId, userId]);
+    }, [categoriesParam, ownerId, userId, isWishlistRoute, isCartRoute]);
 
     const productsWithDiscount = products?.map((product) => {
       // Apply a 10% discount for products with a price greater than $500

@@ -80,7 +80,7 @@ const Navbar = () => {
                     <Link to={`products/wishlist?userId=${user._id}`}>Wishlist</Link>
                   </li>
                   <li>
-                    <Link to="/user/cart">Cart</Link>
+                    <Link to={`products/cart?userId=${user._id}`}>Cart</Link>
                   </li>
                   <li>
                     <button onClick={handleLogout}>Logout</button>

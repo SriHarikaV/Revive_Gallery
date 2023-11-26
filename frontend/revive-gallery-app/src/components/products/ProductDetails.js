@@ -13,20 +13,25 @@ const ProductDetails = () => {
   const productId = searchParams.get('id');
   const [product, setProduct] = useState({});
   const [isWishlist, setIsWishlist] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
 
   useEffect(() => {
     // Fetch product details and wishlist information
     const productUrl = `http://localhost:8080/api/product?_id=${productId}`;
     const wishlistUrl = `http://localhost:8080/api/wishlist?userId=${user._id}`;
+    const cartUrl = `http://localhost:8080/api/cart?userId=${user._id}`;
 
     Promise.all([
       fetch(productUrl).then((response) => response.json()),
       fetch(wishlistUrl).then((response) => response.json()),
+      fetch(cartUrl).then((response) => response.json()),
     ])
-      .then(([productData, wishlistData]) => {
+      .then(([productData, wishlistData, cartData]) => {
         setProduct(productData.products[0]);
         // Check if the current product is wishlisted
-        setIsWishlist(wishlistData.products.some(item => item._id === productId));
+        setIsWishlist(wishlistData.wishlist.some(item => item._id === productId));
+        // Check if the current product is in cart
+        setIsInCart(cartData.cart.some(item => item._id === productId));
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, [productId]);
@@ -65,13 +70,45 @@ const ProductDetails = () => {
       .catch((error) => console.error("Error updating wishlist:", error));
   }; 
 
+  const handleCart = () => {
+    const cartUrl = "http://localhost:8080/api/cart";
+    const method = isInCart ? "DELETE" : "POST";
+
+    const body = {
+      userId: user._id,
+      productId: product._id,
+      quantity: 1, // default
+    };
+
+    fetch(cartUrl, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log("Request failed. Status: " + response.status);
+          throw new Error("Request failed");
+        }
+      })
+      .then((data) => {
+        console.log("Cart updated successfully", data);
+        setIsInCart(!isInCart);
+      })
+      .catch((error) => console.error("Error updating cart:", error));
+  };
+
   return (
     <div className="product-details">
       <div className="product-info">
         <p className="product-status">Available</p>
         <div className="title-price">
           <h3 className="product-title">{product.title}</h3>
-    <h3 className="product-price">${product.price}</h3>
+          <h3 className="product-price">${product.price}</h3>
         </div>
         <p className="product-description">{product.description}</p>
       </div>
@@ -85,8 +122,9 @@ const ProductDetails = () => {
         <ImageGallery images={product.images} />
       </div>
       <div className="owner-info">
-        <div>To do owner name</div>
+        <div>{`Owner: ${user.firstName} ${user.lastName}`}</div>
         <button>Chat with Owner</button>
+        <button onClick={() => handleCart()}>{isInCart ? "Remove from Cart" : "Add to Cart"}</button>
         <button>Buy this online</button>
       </div>
     </div>
