@@ -69,11 +69,11 @@ const getUserCart = async (req, res) => {
     // Populate the cart with product details
     const cartProducts = await Promise.all(
       user.cart.map(async (item) => {
-        const product = await Product.findById(item.product);
-        return {
-          product,
-          quantity: item.quantity,
-        };
+        const product = await Product.findById(item.product).populate({
+          path: "owner",
+          select: "_id email firstName lastName",
+        });
+        return product;
       })
     );
 

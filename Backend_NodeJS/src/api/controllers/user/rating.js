@@ -19,9 +19,10 @@ const addRating = async (req, res) => {
     if (existingRating) {
       // If the user has already rated the product, update the rating
       existingRating.rating = rating;
+      existingRating.lastModified = new Date();
     } else {
       // If the user has not rated the product, add a new rating
-      product.ratings.push({ user: userId, rating });
+      product.ratings.push({ user: userId, rating, lastModified: new Date() });
     }
 
     await product.save();

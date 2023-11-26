@@ -66,6 +66,9 @@ const getUsersWishList = async (req, res) => {
     // Populate the wishlist with product details
     const wishlistProducts = await Product.find({
       _id: { $in: user.wishlist },
+    }).populate({
+      path: "owner",
+      select: "_id email firstName lastName",
     });
 
     res.status(200).json({ wishlist: wishlistProducts });
