@@ -28,6 +28,13 @@ function App() {
                 element={<ProductDetails />}
               />
             </Route>
+            <Route exact path="/products/wishlist" element={<ProductsList />}>
+              <Route
+                exact
+                path="/products/wishlist"
+                element={<ProductsList />}
+              />
+            </Route>
             <Route exact path="/addproduct" element={<PrivateRoute />}>
               <Route exact path="/addproduct" element={<ProductForm />} />
             </Route>

@@ -74,10 +74,10 @@ const Navbar = () => {
                     <Link to="/user/trustworthiness">Trustworthiness: 0/10</Link>
                   </li>
                   <li>
-                    <Link to="/products">My Products</Link>
+                    <Link to={`/products?owner=${user._id}`}>My Products</Link>
                   </li>
                   <li>
-                    <Link to="/user/wishlist">Wishlist</Link>
+                    <Link to={`products/wishlist?userId=${user._id}`}>Wishlist</Link>
                   </li>
                   <li>
                     <Link to="/user/cart">Cart</Link>

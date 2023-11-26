@@ -7,18 +7,50 @@ import { createChatRoom } from "../messages/services";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
-const ProductsList = ({ products }) => {
-  const { user } = useUser();
+const ProductsList = ({ products, wishlistProductIds, setWishlistProductIds  }) => {
+  const { user, token } = useUser();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
   const [showMsg, setShowMsg] = useState(false);
   const [product, setProduct] = useState(null);
-  const [isWishlist, setIsWishlist] = useState(false);
 
   const handleChat = (product) => {
     setShowMsg(true);
     setProduct(product);
+  };
+
+  const handleWishlist = async (productID) => {
+    try {
+      // Toggle the product in/out of the wishlist
+      const wishlistUrl = `http://localhost:8080/api/wishlist`;
+      const method = wishlistProductIds.includes(productID) ? "DELETE" : "POST";
+
+      const response = await fetch(wishlistUrl, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          userId: user._id,
+          productId: productID,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to ${wishlistProductIds.includes(product._id) ? "remove from" : "add to"} wishlist`);
+      }
+
+      setWishlistProductIds((prevIds) =>
+        prevIds.includes(productID)
+          ? prevIds.filter((id) => id !== productID)
+          : [...prevIds, productID]
+      );
+
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const onMsgSent = (e) => {
@@ -45,10 +77,10 @@ const ProductsList = ({ products }) => {
           <div key={product._id} className="product-item">
             {/* <p>{product.owner.email}</p> */}
             <button className="product-wishlist"
-              onClick={() => setIsWishlist(!isWishlist)}
+              onClick={() => handleWishlist(product._id)}
               style={{ backgroundColor: `rgba(0, 0, 0, 0)`, border: 'none' }}
             >
-              <FontAwesomeIcon icon={faHeart} color={isWishlist ? 'magenta' : 'gray'} />
+              <FontAwesomeIcon icon={faHeart} color={wishlistProductIds.includes(product._id) ? 'magenta' : 'gray'} />
             </button>
             <Link to={`/products/details?id=${product._id}`}>
               <div className="product-image">
@@ -117,19 +149,26 @@ const ProductsList = ({ products }) => {
 // Discount decorator
 const withDiscount = (WrappedComponent) => {
   return () => {
-    const { token } = useUser();
+    const { user, token } = useUser();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const categoriesParam = searchParams.get("categories");
+    const ownerId = searchParams.get("owner");
+    const userId = searchParams.get("userId");
 
     const [products, setProducts] = useState([]);
+    const [wishlistProductIds, setWishlistProductIds] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
       let productsUrl;
       if (categoriesParam) {
         productsUrl = `http://localhost:8080/api/product?categories=${categoriesParam}`;
-      } else {
+      } else if(ownerId){
+        productsUrl = `http://localhost:8080/api/product?owner=${ownerId}`;
+      }else if(userId){
+        productsUrl = `http://localhost:8080/api/wishlist?userId=${userId}`;
+      }else {
         productsUrl = `http://localhost:8080/api/product`;
       }
 
@@ -155,7 +194,32 @@ const withDiscount = (WrappedComponent) => {
           console.error("Error fetching products:", error);
           setError(error.message);
         });
-    }, [categoriesParam]);
+
+        const fetchWishlist = async () => {
+          try {
+            const wishlistUrl = `http://localhost:8080/api/wishlist?userId=${user._id}`;
+            const response = await fetch(wishlistUrl, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            });
+    
+            if (!response.ok) {
+              throw new Error("Failed to fetch wishlist");
+            }
+    
+            const wishlistData = await response.json();
+            setWishlistProductIds(wishlistData.products.map((product) => product._id));
+          } catch (error) {
+            setError(error.message);
+          }
+        };
+    
+        fetchWishlist();
+
+    }, [categoriesParam, ownerId, userId]);
 
     const productsWithDiscount = products?.map((product) => {
       // Apply a 10% discount for products with a price greater than $500
@@ -172,7 +236,13 @@ const withDiscount = (WrappedComponent) => {
       };
     });
 
-    return <WrappedComponent products={productsWithDiscount} />;
+    return (
+      <WrappedComponent
+        products={productsWithDiscount}
+        wishlistProductIds={wishlistProductIds}
+        setWishlistProductIds={setWishlistProductIds}
+      />
+    );
   };
 };
 
