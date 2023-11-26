@@ -39,6 +39,21 @@ const userSchema = new Schema(
         },
       },
     ],
+    ratings: [
+      {
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+        rating: {
+          type: Number,
+          required: true,
+        },
+        lastModified: {
+          type: Date,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

@@ -7,6 +7,7 @@ const wishlist = require("./wishlist.js");
 const cart = require("./cart.js");
 const rating = require("./ratings.js");
 const review = require("./reviews.js");
+const userRating = require("./user-ratings.js");
 const router = Router();
 
 router.use("/user", user);
@@ -16,5 +17,6 @@ router.use("/wishlist", wishlist);
 router.use("/cart", cart);
 router.use("/review", review);
 router.use("/rating", rating);
+router.use("/user-rating", userRating);
 
 module.exports = router;

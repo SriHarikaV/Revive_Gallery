@@ -22,7 +22,7 @@ const addReview = async (req, res) => {
     //   // If the user has not reviewed the product, add a new review
     //   product.reviews.push({ user: userId, text });
     // }
-    product.reviews.push({ user: userId, text });
+    product.reviews.push({ user: userId, text, dateAdded: new Date() });
 
     await product.save();
 
