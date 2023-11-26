@@ -21,6 +21,24 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    wishlist: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
+    cart: [
+      {
+        product: {
+          type: Schema.Types.ObjectId,
+          ref: "Product",
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
