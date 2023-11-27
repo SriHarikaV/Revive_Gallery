@@ -17,6 +17,8 @@ const ProductDetails = () => {
   const [isWishlist, setIsWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
   const [reviews, setReviews] = useState([]);
+  const [reviewText, setReviewText] = useState('');
+  const [toggleReviewAdded, setToggleReviewAdded] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ const ProductDetails = () => {
         setIsInCart(cartData.cart.some(item => item._id === productId));
       })
       .catch((error) => console.error("Error fetching data:", error));
-  }, [productId]);
+  }, [productId, toggleReviewAdded]);
 
   if (Object.keys(product).length === 0) {
     // if product is empty, render nothing
@@ -63,8 +65,7 @@ const ProductDetails = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Update the reviews state with the new reviews
-        setReviews([...reviews, data.reviews]);
+        setToggleReviewAdded(!toggleReviewAdded);
       })
       .catch((error) => console.error('Error submitting review:', error));
   };
@@ -162,14 +163,13 @@ const ProductDetails = () => {
       {/* Display reviews */}
       <ProductReviews reviews={reviews} />
 
-      {/* Review button */}
-      {/* <button onClick={() => setIsReviewModalOpen(true)}>Review This Product</button> */}
-
       {/* Review modal */}
       <ProductReviewModal
         isOpen={isReviewModalOpen}
-        onClose={() => setIsReviewModalOpen(false)}
         onSubmit={handleReviewSubmit}
+        reviewText={reviewText}
+        setReviewText={setReviewText}
+        setIsReviewModalOpen = {setIsReviewModalOpen}
       />
     </div>
 

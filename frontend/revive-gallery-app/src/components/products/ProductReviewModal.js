@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
+import "../../styles/products/ProductReviewModal.css";
 
-const ProductReviewModal = ({ isOpen, onClose, onSubmit }) => {
-  const [reviewText, setReviewText] = useState('');
+const ProductReviewModal = ({ isOpen, onSubmit, reviewText, setReviewText, setIsReviewModalOpen }) => {
+  const [validationError, setValidationError] = useState('');
+
+  const onClose=() => {
+    setIsReviewModalOpen(false);
+    setReviewText('');
+    setValidationError('');
+  }
 
   const handleSubmit = () => {
     // Validate reviewText
     if (reviewText.trim() === '') {
       // Handle validation error
+      setValidationError('Review text cannot be empty');
       return;
     }
 
@@ -21,13 +29,19 @@ const ProductReviewModal = ({ isOpen, onClose, onSubmit }) => {
     <div className={`review-modal ${isOpen ? 'open' : ''}`}>
       <div className="modal-content">
         <span className="close" onClick={onClose}>&times;</span>
-        <h2>Review This Product</h2>
-        <textarea
+        <div className="review-header">
+          <h4 className="review-this-product">Review this product</h4>
+        </div>
+        {validationError && (
+          <div className="validation-error">{validationError}</div>
+        )}
+        <textarea className="product-review-textarea"
           placeholder="Write your review here..."
           value={reviewText}
           onChange={(e) => setReviewText(e.target.value)}
         />
-        <button onClick={handleSubmit}>Submit Review</button>
+
+        <button className="submit-product-review" onClick={handleSubmit}>Submit Review</button>
       </div>
     </div>
   );

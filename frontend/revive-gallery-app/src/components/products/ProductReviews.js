@@ -2,9 +2,9 @@ import React from 'react';
 
 const ProductReviews = ({ reviews }) => {
   const groupedReviews = {};
-
+  
   // Group reviews by user
-  reviews.forEach((review) => {
+  reviews?.forEach((review) => {
     const userId = review.user._id;
     if (!groupedReviews[userId]) {
       groupedReviews[userId] = {
