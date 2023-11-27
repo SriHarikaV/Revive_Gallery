@@ -9,6 +9,7 @@ import { UserProvider } from "./components/auth/UserContext";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import Navbar from "./components/home/Navbar"; // Import the Navbar component
 import Messages from "./components/messages/Messages";
+import UserProfile from "./components/user/UserProfile";
 import Success from "./components/products/Success";
 
 function App() {
@@ -46,6 +47,13 @@ function App() {
             <Route path="/messages" element={<PrivateRoute />}>
               <Route index element={<Messages />} />
               <Route path=":chatId" element={<Messages />} />
+            </Route>
+            <Route path="/user/myprofile" element={<UserProfile />}>
+              <Route
+                exact
+                path="/user/myprofile"
+                element={<UserProfile />}
+              />
             </Route>
           </Routes>
         </div>

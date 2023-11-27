@@ -74,6 +74,9 @@ const Navbar = () => {
                     <Link to="/user/trustworthiness">Trustworthiness: 0/10</Link>
                   </li>
                   <li>
+                    <Link to={`/user/myprofile`}>My Profile</Link>
+                  </li>
+                  <li>
                     <Link to={`/products?owner=${user._id}`}>My Products</Link>
                   </li>
                   <li>
