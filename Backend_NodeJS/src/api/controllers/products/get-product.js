@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
     const products = await Product.find(req.query)
       .populate({
         path: "owner",
-        select: "_id email",
+        select: "_id email firstName lastName",
       })
       .populate({
         path: "reviews.user",

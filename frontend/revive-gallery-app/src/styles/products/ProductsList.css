@@ -7,7 +7,7 @@
 
 .product-item {
   width: 260px;
-height: 280px; 
+  height: 280px; 
   margin: 10px;
   text-align: center;
   border: 1px solid #ccc;
@@ -17,6 +17,10 @@ height: 280px;
   flex-direction: column;
   justify-content: space-between; /* Space between title and price */
   padding: 7px; /* Add padding for spacing */
+}
+
+.product-wishlist {
+  text-align: left;
 }
 
 .product-image {

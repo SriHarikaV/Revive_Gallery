@@ -13,7 +13,6 @@ import "./messages.css";
 import { getUserConversations } from "./services";
 import { useUser } from "../auth/UserContext";
 import { io } from "socket.io-client";
-
 let socket;
 
 function Messages() {
@@ -175,6 +174,7 @@ function Messages() {
                   style={{
                     overflowY: "scroll",
                     maxHeight: "75vh",
+                    minHeight: "75vh",
                   }}
                 >
                   {selected.chats.conversation.map((x) => (

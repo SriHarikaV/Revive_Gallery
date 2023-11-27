@@ -15,7 +15,7 @@ const io = require("socket.io")(http, {
 socket(io);
 
 http.listen(port, () => {
-  console.log(`Server started at port : ${port}`);
+  console.log(`Server is started at port : ${port}`);
 });
 
 module.exports = app;
