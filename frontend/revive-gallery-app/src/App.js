@@ -9,6 +9,7 @@ import { UserProvider } from "./components/auth/UserContext";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import Navbar from "./components/home/Navbar"; // Import the Navbar component
 import Messages from "./components/messages/Messages";
+import Success from "./components/products/Success";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegistrationForm />} />
             <Route path="/products" element={<ProductsList />} />
+            <Route path="/success" element={<Success />} />
             <Route exact path="/products/details" element={<PrivateRoute />}>
               <Route
                 exact
@@ -36,11 +38,7 @@ function App() {
               />
             </Route>
             <Route exact path="/products/cart" element={<ProductsList />}>
-              <Route
-                exact
-                path="/products/cart"
-                element={<ProductsList />}
-              />
+              <Route exact path="/products/cart" element={<ProductsList />} />
             </Route>
             <Route exact path="/addproduct" element={<PrivateRoute />}>
               <Route exact path="/addproduct" element={<ProductForm />} />
