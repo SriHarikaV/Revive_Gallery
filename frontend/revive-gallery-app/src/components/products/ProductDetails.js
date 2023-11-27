@@ -5,6 +5,8 @@ import "../../styles/products/ProductDetails.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useUser } from "../auth/UserContext";
+import ProductReviews from './ProductReviews';
+import ProductReviewModal from './ProductReviewModal';
 
 const ProductDetails = () => {
   const location = useLocation();
@@ -14,6 +16,10 @@ const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [isWishlist, setIsWishlist] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [reviewText, setReviewText] = useState('');
+  const [toggleReviewAdded, setToggleReviewAdded] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   useEffect(() => {
     // Fetch product details and wishlist information
@@ -28,19 +34,42 @@ const ProductDetails = () => {
     ])
       .then(([productData, wishlistData, cartData]) => {
         setProduct(productData.products[0]);
+        setReviews(productData.products[0].reviews);
+        console.log('product', product);
+        console.log('product reviews', product.reviews);
         // Check if the current product is wishlisted
         setIsWishlist(wishlistData.wishlist.some(item => item._id === productId));
         // Check if the current product is in cart
         setIsInCart(cartData.cart.some(item => item._id === productId));
       })
       .catch((error) => console.error("Error fetching data:", error));
-  }, [productId]);
+  }, [productId, toggleReviewAdded]);
 
   if (Object.keys(product).length === 0) {
     // if product is empty, render nothing
     return null;
   }
 
+  const handleReviewSubmit = (reviewText) => {
+    // Call the API to submit the review
+    fetch('http://localhost:8080/api/review', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: user._id,
+        productId: product._id,
+        text: reviewText,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setToggleReviewAdded(!toggleReviewAdded);
+      })
+      .catch((error) => console.error('Error submitting review:', error));
+  };
+  
   const handleWishlist = () => {
     setIsWishlist(!isWishlist);
 
@@ -103,9 +132,10 @@ const ProductDetails = () => {
   };
 
   return (
+    <div className="product-details-container">
     <div className="product-details">
       <div className="product-info">
-        <p className="product-status">Available</p>
+        <p className="product-status">{product.status}</p>
         <div className="title-price">
           <h3 className="product-title">{product.title}</h3>
           <h3 className="product-price">${product.price}</h3>
@@ -122,12 +152,27 @@ const ProductDetails = () => {
         <ImageGallery images={product.images} />
       </div>
       <div className="owner-info">
-        <div>{`Owner: ${user.firstName} ${user.lastName}`}</div>
+        <div>{`Owner: ${product.owner.firstName} ${product.owner.lastName}`}</div>
         <button>Chat with Owner</button>
         <button onClick={() => handleCart()}>{isInCart ? "Remove from Cart" : "Add to Cart"}</button>
         <button>Buy this online</button>
+        <button onClick={() => setIsReviewModalOpen(true)}>Review This Product</button>
       </div>
+      </div>
+
+      {/* Display reviews */}
+      <ProductReviews reviews={reviews} />
+
+      {/* Review modal */}
+      <ProductReviewModal
+        isOpen={isReviewModalOpen}
+        onSubmit={handleReviewSubmit}
+        reviewText={reviewText}
+        setReviewText={setReviewText}
+        setIsReviewModalOpen = {setIsReviewModalOpen}
+      />
     </div>
+
   );
 };
 

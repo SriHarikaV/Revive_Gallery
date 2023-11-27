@@ -1,8 +1,8 @@
 .product-details {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-  }
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
 
 .product-info {
   max-width: 33%;
@@ -45,51 +45,51 @@
 }
 
   
-  .image-gallery {
-    flex: 1;
+.image-gallery {
+  flex: 1;
   max-width: 33%; 
   margin-left: 20px; 
-    position: relative;
-  }
+  position: relative;
+}
 
-  .image-container {
-    width: 450px;
-    height: 450px;
-    overflow: hidden;
-    border: 1px solid #ccc;
-  }
-  
-  .image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+.image-container {
+  width: 450px;
+  height: 450px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
 
-  .image-gallery .navigation {
-    position: absolute;
-    bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
-    width: 450px;
-  }
-  
-  .image-gallery .navigation button {
-    background-color: rgb(66, 66, 179);
-    border-radius: 10px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: color 0.3s;
-    &:hover {
-      background-color: rgb(71, 71, 245);
-    }
-    &:disabled {
-      background-color: rgb(159, 159, 207);
-    }
-  }
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  .owner-info {
+.image-gallery .navigation {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  width: 450px;
+}
+
+.image-gallery .navigation button {
+  background-color: rgb(66, 66, 179);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s;
+  &:hover {
+    background-color: rgb(71, 71, 245);
+  }
+  &:disabled {
+    background-color: rgb(159, 159, 207);
+  }
+}
+
+.owner-info {
   flex: 1;
   max-width: 33%;
   display: flex;
@@ -97,13 +97,13 @@
   align-items: center;
   background-color: rgb(232, 247, 247);
   margin-left: 80px;
-  }
-  
-  .owner-info > div {
-    margin-bottom: 10px;
-  }
-  
-  .owner-info button {
+}
+
+.owner-info > div {
+  margin-bottom: 10px;
+}
+
+.owner-info button {
   background-color: rgb(66, 66, 179);
   border-radius: 10px;
   color: #fff;
@@ -114,4 +114,46 @@
   &:hover {
     background-color: rgb(71, 71, 245);
     }
-  }
+}
+
+.product-reviews {
+  margin-top: 50px;
+  margin-left: 20px; /* Add left margin */
+  margin-right: 400px; /* Add right margin */
+}
+
+.user-review-group {
+  margin-bottom: 20px;
+  border: 1px solid #db2c2c;
+  border-radius: 8px;
+  padding: 0px 10px 0px 10px;
+  margin: 5px 0px 10px 0px;
+  background-color: #fefcff;
+}
+
+.review-item {
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  padding: 0px 10px 0px 10px;
+  margin: 0px 0px 5px 50px;
+  display: flex; /* Make the review item a flex container */
+  justify-content: space-between; /* Ensure comment and date are on the same row */
+}
+
+.review-text {
+  font-size: 16px;
+}
+
+.review-date {
+  font-size: 14px;
+  color: #777;
+}
+
+.review-user {
+  background-color: #ffd700;
+  /* Ensure that the background color spans the entire width of the text */
+  display: inline-block; 
+}
+
+
+
