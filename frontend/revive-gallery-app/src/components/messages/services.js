@@ -47,3 +47,19 @@ export async function sendMessage(chatId, message) {
     })
   ).json();
 }
+export async function updateProductStatus(productId, status) {
+  return (
+    await fetch(`${baseUrl}/product`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      //   credentials: "include",
+      body: JSON.stringify({
+        _id: productId,
+        buyer: JSON.parse(localStorage.getItem("user"))._id,
+        status,
+      }),
+    })
+  ).json();
+}
