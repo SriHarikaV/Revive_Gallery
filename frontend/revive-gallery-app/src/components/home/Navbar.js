@@ -71,9 +71,6 @@ const Navbar = () => {
               {isDropdownOpen && (
                 <ul className="dropdown-content">
                   <li>
-                    <Link to="/user/trustworthiness">Trustworthiness: 0/10</Link>
-                  </li>
-                  <li>
                     <Link to={`/user/myprofile`}>My Profile</Link>
                   </li>
                   <li>
