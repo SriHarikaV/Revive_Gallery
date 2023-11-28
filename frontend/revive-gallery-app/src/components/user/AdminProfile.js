@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useUser } from "../auth/UserContext";
 import UserProductsList  from "./UserProductsList";
-import { useParams } from "react-router-dom";
 import "../../styles/user/UserProfile.css";
 import {calculateAverageProductsRating, calculateAverageReviewRating, calculateTrustworthinessScore} from "../../utils/calculateScore";
 
-const UserProfile = () => {
-  const userId = useParams().userId;
-
+const AdminProfile = () => {
+  const { user } = useUser();
   const [userProfile, setUserProfile] = useState(null);
   const [error, setError] = useState(null);
   const [averageProductsRating, setAverageProductsRating] = useState(0);
@@ -16,10 +15,10 @@ const UserProfile = () => {
 
 useEffect(() => {
     // Fetch user profile data using the API
-    const userProfileUrl = `http://localhost:8080/api/user/get?_id=${userId}`;
+    const userProfileUrl = `http://localhost:8080/api/user/get?_id=${user._id}`;
 
     fetchUserProfile(userProfileUrl);
-  }, [userId]);
+  }, [user._id, averageProductsRating, averageUserProfileRating]);
 
   const fetchUserProfile = async (url) => {
     try {
@@ -56,35 +55,38 @@ useEffect(() => {
 
       const averageProductReviewRatings = await calculateAverageReviewRating(productsData.products);
       setAverageProductReviewRating(averageProductReviewRatings);
+
       
       setTrustworthinessScore(averageProductsRatings);
+
+      
     } catch (error) {
       console.error("Error fetching products:", error);
       setError(error.message);
     }
   };
 
-  // function to calculate the average rating
+  // Helper function to calculate the average rating
     const calculateAverageUserProfileRating = (ratings) => {
         const sum = ratings.reduce((acc, rating) => acc + rating.rating, 0);
         return (sum / ratings.length);
     };
 
   if (!userProfile) {
-    return <p>Loading seller's profile...</p>;
+    return <p>Loading your profile...</p>;
   }
 
   return (
     <div>
         <div className="user-profile-container">
             <div className="user-profile-header">
-                <h2>Seller's Profile</h2>
+                <h2>My Profile</h2>
             </div>
             <div className="user-details">
                 <p className="user-name">Name: {`${userProfile.firstName} ${userProfile.lastName}`}</p>
                 <p className="user-email">Email: {userProfile.email}</p>
                 <p className="user-rating">
-                    Seller's Profile Rating: {userProfile.ratings.length > 0 ? averageUserProfileRating : "N/A"}
+                    Profile Rating: {userProfile.ratings.length > 0 ? averageUserProfileRating : "N/A"}
                 </p>
                 <p className="user-rating">
                     Products Rating: {averageProductsRating}
@@ -96,7 +98,7 @@ useEffect(() => {
                 Trustworthyness: {calculateTrustworthinessScore(averageUserProfileRating, averageProductsRating, averageProductReviewRating)}/10
                 </p>
             </div>
-            <h4 className="user-products-header"> Explore all products from this seller </h4>
+            <h4 className="user-products-header"> My Products </h4>
             {error && <p className="error-message">Error: {error}</p>}
         </div>
         <div>
@@ -108,4 +110,4 @@ useEffect(() => {
   );
 };
 
-export default UserProfile;
+export default AdminProfile;

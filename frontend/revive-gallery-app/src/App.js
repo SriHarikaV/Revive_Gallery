@@ -9,6 +9,7 @@ import { UserProvider } from "./components/auth/UserContext";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import Navbar from "./components/home/Navbar"; // Import the Navbar component
 import Messages from "./components/messages/Messages";
+import AdminProfile from "./components/user/AdminProfile";
 import UserProfile from "./components/user/UserProfile";
 import Success from "./components/products/Success";
 
@@ -31,14 +32,14 @@ function App() {
                 element={<ProductDetails />}
               />
             </Route>
-            <Route exact path="/products/wishlist" element={<ProductsList />}>
+            <Route exact path="/products/wishlist" element={<PrivateRoute />}>
               <Route
                 exact
                 path="/products/wishlist"
                 element={<ProductsList />}
               />
             </Route>
-            <Route exact path="/products/cart" element={<ProductsList />}>
+            <Route exact path="/products/cart" element={<PrivateRoute />}>
               <Route exact path="/products/cart" element={<ProductsList />} />
             </Route>
             <Route exact path="/addproduct" element={<PrivateRoute />}>
@@ -48,12 +49,12 @@ function App() {
               <Route index element={<Messages />} />
               <Route path=":chatId" element={<Messages />} />
             </Route>
-            <Route path="/user/myprofile" element={<UserProfile />}>
-              <Route
-                exact
-                path="/user/myprofile"
-                element={<UserProfile />}
-              />
+            <Route path="/user/myprofile" element={<PrivateRoute />}>
+              <Route exact path="/user/myprofile" element={<AdminProfile />}/>
+            </Route>
+            <Route path="/user/profile" element={<PrivateRoute />}>
+              <Route index element={<AdminProfile />} />
+              <Route path=":userId" element={<UserProfile />} />
             </Route>
           </Routes>
         </div>

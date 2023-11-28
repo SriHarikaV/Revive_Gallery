@@ -11,6 +11,14 @@
     padding: 10px;
     text-align: center;
   }
+
+  .user-products-header {
+    margin-top: 100px;
+    background-color: #e58686;
+    color: #ffffff;
+    padding: 5px;
+    text-align: center;
+  }
   
   .user-details {
     margin-top: 20px;
@@ -20,6 +28,12 @@
   .user-email,
   .user-rating {
     margin: 5px 0;
+  }
+
+  .trustworthyness-score{
+    margin: 5px 0;
+    font-weight: bold;
+    color: #27ae60;
   }
   
   .user-rating {

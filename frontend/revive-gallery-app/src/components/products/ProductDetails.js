@@ -7,11 +7,14 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "../auth/UserContext";
 import ProductReviews from "./ProductReviews";
 import ProductReviewModal from "./ProductReviewModal";
+import ProductRatingModal from "./ProductRatingModal";
 import StripeCheckout from "react-stripe-checkout";
 import { updateProductStatus } from "../messages/services";
 
 const ProductDetails = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const { user } = useUser();
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get("id");
@@ -22,7 +25,8 @@ const ProductDetails = () => {
   const [reviewText, setReviewText] = useState("");
   const [toggleReviewAdded, setToggleReviewAdded] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     // Fetch product details and wishlist information
@@ -66,6 +70,27 @@ const ProductDetails = () => {
         userId: user._id,
         productId: product._id,
         text: reviewText,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setToggleReviewAdded(!toggleReviewAdded);
+      })
+      .catch((error) => console.error("Error submitting product rating:", error));
+  };
+
+  // Handle rating submission
+  const handleRatingSubmit = (selectedRating) => {
+    // Call the API to submit the review
+    fetch("http://localhost:8080/api/rating", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user._id,
+        productId: product._id,
+        rating: selectedRating,
       }),
     })
       .then((response) => response.json())
@@ -136,6 +161,11 @@ const ProductDetails = () => {
       .catch((error) => console.error("Error updating cart:", error));
   };
 
+  // Calculate the average rating
+  const averageRating =
+    product.ratings.reduce((total, rating) => total + rating.rating, 0) /
+    (product.ratings.length || 1); // Avoid division by zero
+
   const priceForStripe = product.price;
   const publishableKey =
     "pk_test_51Ht8t0AUGh2stU4g2NhzjhmzwmSJ6Mt3ghnJAbE6L6xGm0BpbgVQaids6bI9ZboSENHhYe87U2VVsai87mR3QdeJ00VoxGi0Ho";
@@ -156,7 +186,7 @@ const ProductDetails = () => {
           {product.status !== "Sold Out" && (
             <StripeCheckout
               label="Buy this online"
-              name="Event Management"
+              name="Product purchase"
               billingAddress
               shippingAddress
               description={`Your total is $${priceForStripe}.00`}
@@ -166,29 +196,44 @@ const ProductDetails = () => {
               stripeKey={publishableKey}
             ></StripeCheckout>
           )}
-        </div>
-        <div className="image-gallery">
-          <button
-            onClick={() => handleWishlist()}
-            style={{ backgroundColor: `rgba(0, 0, 0, 0)`, border: "none" }}
-          >
-            <FontAwesomeIcon
-              icon={faHeart}
-              color={isWishlist ? "magenta" : "gray"}
-            />
+
+          <button className="add-to-cart" onClick={() => handleCart()}>
+            {isInCart ? "Remove from Cart" : "Add to Cart"}
           </button>
+        </div>
+
+        <div className="image-gallery">
+          <div className="image-top">
+            <button
+              onClick={() => handleWishlist()}
+              style={{ backgroundColor: `rgba(0, 0, 0, 0)`, border: "none" }}
+            >
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={isWishlist ? "magenta" : "gray"}
+              />
+            </button>
+            <div className="average-rating">
+              Rating: {averageRating.toFixed(1)}
+            </div>
+          </div>
+          
           <ImageGallery images={product.images} />
         </div>
         <div className="owner-info">
-          <div>{`Owner: ${product.owner.firstName} ${product.owner.lastName}`}</div>
-          <button>Chat with Owner</button>
-          <button onClick={() => handleCart()}>
-            {isInCart ? "Remove from Cart" : "Add to Cart"}
-          </button>
+          <div>{`Seller: ${product.owner.firstName} ${product.owner.lastName}`}</div>
+          <button>Chat with Seller</button>
+          <button onClick={() => navigate(`/user/profile/${product.owner._id}`)}>Visit Seller's Profile</button>
 
-          <button onClick={() => setIsReviewModalOpen(true)}>
-            Review This Product
-          </button>
+          <div className="product-rating-button">
+            <button onClick={() => setIsReviewModalOpen(true)}>
+              Review This Product
+            </button>
+            <button onClick={() => setIsRatingModalOpen(true)}>
+              Rate This Product
+            </button>
+          </div>
+          
         </div>
       </div>
 
@@ -202,6 +247,15 @@ const ProductDetails = () => {
         reviewText={reviewText}
         setReviewText={setReviewText}
         setIsReviewModalOpen={setIsReviewModalOpen}
+      />
+
+      {/* Rating modal */}
+      <ProductRatingModal
+        isOpen={isRatingModalOpen}
+        onSubmit={handleRatingSubmit}
+        rating={rating}
+        setRating={setRating}
+        setIsRatingModalOpen={setIsRatingModalOpen}
       />
     </div>
   );
