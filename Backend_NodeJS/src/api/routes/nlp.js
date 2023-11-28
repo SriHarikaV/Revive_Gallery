@@ -39,7 +39,6 @@ router.post("/", function (req, res, next) {
 
   const { SentimentAnalyzer, PorterStemmer } = natural;
   const analyzer = new SentimentAnalyzer("English", PorterStemmer, "afinn");
-
   const score = analyzer.getSentiment(filteredReview);
 
   res.status(200).json({ score });

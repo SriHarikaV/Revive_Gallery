@@ -72,7 +72,7 @@ export const calculateTrustworthinessScore = (
     const productScore = mapToScore(averageProductRating, productMinRating, productMaxRating);
     const reviewScore = mapToScore(averageReviewRating, reviewMinRating, reviewMaxRating);
   
-    // Calculate the overall trustworthiness score (you can adjust the weights as needed)
+    // Calculate the overall trustworthiness score
     const overallScore = (userProfileScore + productScore + reviewScore) / 3;
   
     return overallScore.toFixed(3);

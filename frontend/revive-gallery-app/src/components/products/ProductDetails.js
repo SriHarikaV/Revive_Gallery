@@ -238,7 +238,7 @@ const ProductDetails = () => {
               />
             </button>
             <div className="average-rating">
-              Rating: {averageRating.toFixed(1)}
+              Rating: {averageRating.toFixed(2)}
             </div>
           </div>
           
