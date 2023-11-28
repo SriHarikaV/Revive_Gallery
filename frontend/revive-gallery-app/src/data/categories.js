@@ -10,6 +10,7 @@ const categories = [
     { name: 'Shoes'},
     { name: 'Jewellery'},
     { name: 'Stationery'},
+    {name: 'Travelling'}
   ];
   
   export default categories;

@@ -87,6 +87,28 @@ const ProductsList = ({ products, wishlistProductIds, setWishlistProductIds  }) 
                 <img src={product.images[0]} alt={product.description} />
               </div>
             </Link>
+            
+            <div className="product-list-info">
+              <h2>{product.title}</h2>
+              <p>
+                {product.price !== product.discountedPrice ? (
+                  <>
+                    <span className="original-price">
+                    <del>${product.price}</del>
+                    </span>
+                    {" "}
+                    <span className="discounted-price">
+                    <strong>${product.discountedPrice}</strong>
+                    </span>
+                  </>
+                ) : (
+                  <span className="normal-price">
+                    <strong>${product.price}</strong>
+                  </span>
+                )}
+              </p>
+            </div>
+
             {console.log(product.owner._id, user._id)}
             {!!user && product.owner._id !== user._id && (
               <Button
@@ -97,17 +119,6 @@ const ProductsList = ({ products, wishlistProductIds, setWishlistProductIds  }) 
                 Chat With Seller
               </Button>
             )}
-
-            <div className="product-list-info">
-              <h2>{product.title}</h2>
-              <p>
-                {product.discountedPrice && (
-                  <span className="original-price">
-                    ${product.discountedPrice}
-                  </span>
-                )}
-              </p>
-            </div>
           </div>
         ))}
       </div>
