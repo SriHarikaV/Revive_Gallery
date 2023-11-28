@@ -8,6 +8,7 @@ import { useUser } from "../auth/UserContext";
 import ProductReviews from "./ProductReviews";
 import ProductReviewModal from "./ProductReviewModal";
 import ProductRatingModal from "./ProductRatingModal";
+import UserRatingModal from "./UserRatingModal";
 import StripeCheckout from "react-stripe-checkout";
 import { updateProductStatus } from "../messages/services";
 
@@ -26,7 +27,9 @@ const ProductDetails = () => {
   const [toggleReviewAdded, setToggleReviewAdded] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
+  const [isProfileRatingModalOpen, setIsProfileRatingModalOpen] = useState(false);
   const [rating, setRating] = useState(0);
+  const [profileRating, setProfileRating] = useState(0);
 
   useEffect(() => {
     // Fetch product details and wishlist information
@@ -90,6 +93,27 @@ const ProductDetails = () => {
       body: JSON.stringify({
         userId: user._id,
         productId: product._id,
+        rating: selectedRating,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setToggleReviewAdded(!toggleReviewAdded);
+      })
+      .catch((error) => console.error("Error submitting review:", error));
+  };
+
+  // Handle rating submission
+  const handleProfileRatingSubmit = (selectedRating) => {
+    // Call the API to submit the review
+    fetch("http://localhost:8080/api/user-rating", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ratedUserId: user._id,
+        userId: product.owner._id,
         rating: selectedRating,
       }),
     })
@@ -221,8 +245,11 @@ const ProductDetails = () => {
           <ImageGallery images={product.images} />
         </div>
         <div className="owner-info">
-          <div>{`Seller: ${product.owner.firstName} ${product.owner.lastName}`}</div>
+          <div><strong>{`Seller: ${product.owner.firstName} ${product.owner.lastName}`}</strong></div>
           <button>Chat with Seller</button>
+          <button onClick={() => setIsProfileRatingModalOpen(true)}>
+              Rate This Seller
+            </button>
           <button onClick={() => navigate(`/user/profile/${product.owner._id}`)}>Visit Seller's Profile</button>
 
           <div className="product-rating-button">
@@ -256,6 +283,15 @@ const ProductDetails = () => {
         rating={rating}
         setRating={setRating}
         setIsRatingModalOpen={setIsRatingModalOpen}
+      />
+
+      {/* Seller's Profile Rating modal */}
+      <UserRatingModal
+        isOpen={isProfileRatingModalOpen}
+        onSubmit={handleProfileRatingSubmit}
+        rating={profileRating}
+        setRating={setProfileRating}
+        setIsRatingModalOpen={setIsProfileRatingModalOpen}
       />
     </div>
   );
