@@ -1,5 +1,4 @@
 module.exports = {
-  testMatch: [`<rootDir>/test/*.test.js`],
+  // testMatch: [`<rootDir>/*.test.js`],
   testEnvironment: "node",
-  preset: "@shelf/jest-mongodb",
 };
