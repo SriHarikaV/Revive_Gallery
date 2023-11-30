@@ -4,7 +4,8 @@ jobs:
   backend:
     docker:
       - image: circleci/node:14
-
+    environment:
+      MONGOMS_VERSION: 4.4.17
     steps:
       - checkout
       - run:
