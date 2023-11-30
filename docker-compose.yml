@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  api:
+    build: ./Backend_NodeJS
+    container_name: api_backend
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./Backend_NodeJS:/app
+      - /app/node_modules
+
+  client:
+    build: ./frontend/revive-gallery-app
+    container_name: client_frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/revive-gallery-app:/appnew
+      - /appnew/node_modules
+    stdin_open: true
+    tty: true
