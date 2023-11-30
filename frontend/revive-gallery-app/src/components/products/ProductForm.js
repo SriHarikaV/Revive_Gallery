@@ -16,7 +16,7 @@ function ProductForm() {
     price: '',
     categories: [], // array to store selected categories
     images: [], // array to store selected images/image urls
-    owner: user._id,
+    owner: user && user._id,
   });
 
   const handleInputChange = (e) => {
