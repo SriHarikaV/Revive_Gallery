@@ -23,7 +23,7 @@
     "express": "^4.18.2",
     "helmet": "^6.0.0",
     "joi": "^17.6.4",
-    "mangodb": "^1.0.0",
+    "mongodb-memory-server": "^9.1.1",
     "mongoose": "^6.7.0",
     "morgan": "^1.10.0",
     "natural": "^6.9.2",
@@ -35,6 +35,7 @@
   "devDependencies": {
     "@shelf/jest-mongodb": "^4.1.7",
     "jest": "^29.7.0",
+    "nock": "^13.4.0",
     "nodemon": "^3.0.1",
     "supertest": "^6.3.3"
   }

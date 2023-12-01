@@ -1,23 +1,16 @@
-const { MongoClient } = require("mongodb");
-const { dbUri } = require("../src/config/index.js");
-const app = require("../index.js");
+const app = require("../../index.js");
 const request = require("supertest");
-const { Product } = require("../src/models/index.js");
+const { Product } = require("../../src/models/index.js");
+const {
+  cleanData,
+  connect,
+  disconnect,
+} = require("../mongodb.memory.test.helper.js");
 
 describe("insert", () => {
-  let connection;
-
-  beforeAll(async () => {
-    connection = await MongoClient.connect(dbUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    db = await connection.db("test");
-  });
-
-  afterAll(async () => {
-    await connection.close();
-  });
+  beforeAll(connect);
+  beforeEach(cleanData);
+  afterAll(disconnect);
 
   it("should create a product with valid data", async () => {
     // Insert the mock user into the database before the test
