@@ -1,7 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useParams } from "react-router-dom";
 import LoginForm from "./components/auth/LoginForm";
 import RegistrationForm from "./components/auth/RegistrationForm";
 import ProductForm from "./components/products/ProductForm";
+import EditProductForm from "./components/products/EditProductForm";
 import ProductsList from "./components/products/ProductsList";
 import ProductDetails from "./components/products/ProductDetails";
 import Homepage from "./components/home/HomePage";
@@ -45,6 +46,12 @@ function App() {
             <Route exact path="/addproduct" element={<PrivateRoute />}>
               <Route exact path="/addproduct" element={<ProductForm />} />
             </Route>
+            <Route path="/editproduct/:id" element={<PrivateRoute />}>
+              <Route
+                path="/editproduct/:id"
+                element={<EditProductPage />}
+              />
+            </Route>
             <Route path="/messages" element={<PrivateRoute />}>
               <Route index element={<Messages />} />
               <Route path=":chatId" element={<Messages />} />
@@ -62,5 +69,13 @@ function App() {
     </UserProvider>
   );
 }
+
+const EditProductPage = () => {
+  const { id } = useParams();
+
+  return (
+    <EditProductForm productId={id} />
+  );
+};
 
 export default App;

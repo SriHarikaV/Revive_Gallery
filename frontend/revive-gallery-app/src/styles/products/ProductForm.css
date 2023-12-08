@@ -1,5 +1,5 @@
  .ProductForm {
-  max-width: 600px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   margin-top: 20px;
@@ -85,10 +85,35 @@
 
 }
 
-/* Responsive styles for smaller screens (optional) */
-@media (max-width: 768px) {
-  .ProductForm {
-    width: 100%;
-    padding: 10px;
-  }
+/* Additional styling for existing product images */
+.ProductForm .existing-product-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.ProductForm .existing-image {
+  width: calc(32% - 5px); /* Three images per row with a little gap */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.ProductForm .existing-image img {
+  width: 50%;
+  height: 250px; /* Set a fixed height for consistent display */
+  object-fit: cover; /* Maintain aspect ratio and cover the container */
+  border-radius: 4px;
+}
+
+.ProductForm .close-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 14px; /* Reduce the font size */
+  cursor: pointer;
+  color: #fff;
+  background-color: #333;
+  border-radius: 50%;
+  padding: 4px;
 }

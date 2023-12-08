@@ -212,16 +212,6 @@ const UserProductsList = ({ ownerId }) => {
                 )}
               </p>
             </div>
-            {/* <div className="product-list-info">
-              <h2>{product.title}</h2>
-              <p>
-                {product.discountedPrice && (
-                  <span className="original-price">
-                    ${product.discountedPrice}
-                  </span>
-                )}
-              </p>
-            </div> */}
           </div>
         ))}
       </div>

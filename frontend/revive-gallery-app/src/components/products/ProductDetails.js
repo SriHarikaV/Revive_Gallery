@@ -191,6 +191,33 @@ const ProductDetails = () => {
       .catch((error) => console.error("Error updating cart:", error));
   };
 
+  const handleDeleteProduct = () => {
+    navigate("/products");
+    // Call the API to delete the product
+    fetch("http://localhost:8080/api/product", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        _id: product._id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Product deleted successfully", data);
+
+        // Redirect to the /products route
+        navigate("/products");
+      })
+      .catch((error) => console.error("Error deleting product:", error));
+  };
+
+  const handleEditProduct = () => {
+    // Redirect to the edit product page
+    navigate(`/editproduct/${productId}`);
+  };
+
   // Calculate the average rating
   const averageRating =
     product.ratings.reduce((total, rating) => total + rating.rating, 0) /
@@ -271,37 +298,48 @@ const ProductDetails = () => {
 
           <ImageGallery images={product.images} />
         </div>
+        {(!!user && product.owner._id !== user._id) ? (
+          <div className="owner-info">
+            <div>
+              <strong>{`Seller: ${product.owner.firstName} ${product.owner.lastName}`}</strong>
+            </div>
+            
+              <Button
+                size="sm"
+                className="chat_seller"
+                onClick={() => handleChat(product)}
+              >
+                Chat With Seller
+              </Button>
+            
+            <button onClick={() => setIsProfileRatingModalOpen(true)}>
+              Rate This Seller
+            </button>
+            <button
+              onClick={() => navigate(`/user/profile/${product.owner._id}`)}
+            >
+              Visit Seller's Profile
+            </button>
+
+            <div className="product-rating-button">
+              <button onClick={() => setIsReviewModalOpen(true)}>
+                Review This Product
+              </button>
+              <button onClick={() => setIsRatingModalOpen(true)}>
+                Rate This Product
+              </button>
+            </div>
+          </div>
+        ):
         <div className="owner-info">
           <div>
             <strong>{`Seller: ${product.owner.firstName} ${product.owner.lastName}`}</strong>
           </div>
-          {!!user && product.owner._id !== user._id && (
-            <Button
-              size="sm"
-              className="chat_seller"
-              onClick={() => handleChat(product)}
-            >
-              Chat With Seller
-            </Button>
-          )}
-          <button onClick={() => setIsProfileRatingModalOpen(true)}>
-            Rate This Seller
-          </button>
-          <button
-            onClick={() => navigate(`/user/profile/${product.owner._id}`)}
-          >
-            Visit Seller's Profile
-          </button>
-
-          <div className="product-rating-button">
-            <button onClick={() => setIsReviewModalOpen(true)}>
-              Review This Product
-            </button>
-            <button onClick={() => setIsRatingModalOpen(true)}>
-              Rate This Product
-            </button>
-          </div>
+          
+          <button onClick={handleEditProduct}> Edit Product</button>
+          <button onClick={handleDeleteProduct}> Delete Product</button>
         </div>
+      }
       </div>
 
       {/* Display reviews */}
