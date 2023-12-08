@@ -4,10 +4,14 @@ import "../../styles/products/ProductsList.css";
 import { useUser } from "../auth/UserContext";
 import { Button, Form, Modal } from "react-bootstrap";
 import { createChatRoom } from "../messages/services";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
-const ProductsList = ({ products, wishlistProductIds, setWishlistProductIds  }) => {
+const ProductsList = ({
+  products,
+  wishlistProductIds,
+  setWishlistProductIds,
+}) => {
   const { user, token } = useUser();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
@@ -39,7 +43,11 @@ const ProductsList = ({ products, wishlistProductIds, setWishlistProductIds  }) 
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to ${wishlistProductIds.includes(product._id) ? "remove from" : "add to"} wishlist`);
+        throw new Error(
+          `Failed to ${
+            wishlistProductIds.includes(product._id) ? "remove from" : "add to"
+          } wishlist`
+        );
       }
 
       setWishlistProductIds((prevIds) =>
@@ -47,7 +55,6 @@ const ProductsList = ({ products, wishlistProductIds, setWishlistProductIds  }) 
           ? prevIds.filter((id) => id !== productID)
           : [...prevIds, productID]
       );
-
     } catch (error) {
       setError(error.message);
     }
@@ -76,29 +83,34 @@ const ProductsList = ({ products, wishlistProductIds, setWishlistProductIds  }) 
         {products.map((product) => (
           <div key={product._id} className="product-item">
             {/* <p>{product.owner.email}</p> */}
-            <button className="product-wishlist"
+            <button
+              className="product-wishlist"
               onClick={() => handleWishlist(product._id)}
-              style={{ backgroundColor: `rgba(0, 0, 0, 0)`, border: 'none' }}
+              style={{ backgroundColor: `rgba(0, 0, 0, 0)`, border: "none" }}
             >
-              <FontAwesomeIcon icon={faHeart} color={wishlistProductIds.includes(product._id) ? 'magenta' : 'gray'} />
+              <FontAwesomeIcon
+                icon={faHeart}
+                color={
+                  wishlistProductIds.includes(product._id) ? "magenta" : "gray"
+                }
+              />
             </button>
             <Link to={`/products/details?id=${product._id}`}>
               <div className="product-image">
                 <img src={product.images[0]} alt={product.description} />
               </div>
             </Link>
-            
+
             <div className="product-list-info">
               <h2>{product.title}</h2>
               <p>
                 {product.price !== product.discountedPrice ? (
                   <>
                     <span className="original-price">
-                    <del>${product.price}</del>
-                    </span>
-                    {" "}
+                      <del>${product.price}</del>
+                    </span>{" "}
                     <span className="discounted-price">
-                    <strong>${product.discountedPrice}</strong>
+                      <strong>${product.discountedPrice}</strong>
                     </span>
                   </>
                 ) : (
@@ -109,7 +121,6 @@ const ProductsList = ({ products, wishlistProductIds, setWishlistProductIds  }) 
               </p>
             </div>
 
-            {console.log(product.owner._id, user._id)}
             {!!user && product.owner._id !== user._id && (
               <Button
                 size="sm"
@@ -177,13 +188,13 @@ const withDiscount = (WrappedComponent) => {
       let productsUrl;
       if (categoriesParam) {
         productsUrl = `http://localhost:8080/api/product?categories=${categoriesParam}`;
-      } else if(ownerId){
+      } else if (ownerId) {
         productsUrl = `http://localhost:8080/api/product?owner=${ownerId}`;
-      }else if(isWishlistRoute && userId){
+      } else if (isWishlistRoute && userId) {
         productsUrl = `http://localhost:8080/api/wishlist?userId=${userId}`;
-      }else if(isCartRoute && userId){
+      } else if (isCartRoute && userId) {
         productsUrl = `http://localhost:8080/api/cart?userId=${userId}`;
-      }else {
+      } else {
         productsUrl = `http://localhost:8080/api/product`;
       }
 
@@ -192,7 +203,7 @@ const withDiscount = (WrappedComponent) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((response) => {
@@ -203,11 +214,11 @@ const withDiscount = (WrappedComponent) => {
         })
         .then(async (data) => {
           console.log("Products List:", data);
-          if(isWishlistRoute && userId){
+          if (isWishlistRoute && userId) {
             setProducts(data.wishlist || []);
-          }else if(isCartRoute && userId){
+          } else if (isCartRoute && userId) {
             setProducts(data.cart || []);
-          }else{
+          } else {
             setProducts(data.products || []);
           }
         })
@@ -216,30 +227,31 @@ const withDiscount = (WrappedComponent) => {
           setError(error.message);
         });
 
-        const fetchWishlist = async () => {
-          try {
-            const wishlistUrl = `http://localhost:8080/api/wishlist?userId=${user._id}`;
-            const response = await fetch(wishlistUrl, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            });
+      const fetchWishlist = async () => {
+        try {
+          const wishlistUrl = `http://localhost:8080/api/wishlist?userId=${user._id}`;
+          const response = await fetch(wishlistUrl, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-            if (!response.ok) {
-              throw new Error("Failed to fetch wishlist");
-            }
-
-            const wishlistData = await response.json();
-            setWishlistProductIds(wishlistData.wishlist.map((product) => product._id));
-          } catch (error) {
-            setError(error.message);
+          if (!response.ok) {
+            throw new Error("Failed to fetch wishlist");
           }
-        };
-    
-        fetchWishlist();
 
+          const wishlistData = await response.json();
+          setWishlistProductIds(
+            wishlistData.wishlist.map((product) => product._id)
+          );
+        } catch (error) {
+          setError(error.message);
+        }
+      };
+
+      fetchWishlist();
     }, [categoriesParam, ownerId, userId, isWishlistRoute, isCartRoute]);
 
     const productsWithDiscount = products?.map((product) => {

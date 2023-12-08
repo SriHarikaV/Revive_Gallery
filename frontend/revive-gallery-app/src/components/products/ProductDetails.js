@@ -10,7 +10,8 @@ import ProductReviewModal from "./ProductReviewModal";
 import ProductRatingModal from "./ProductRatingModal";
 import UserRatingModal from "./UserRatingModal";
 import StripeCheckout from "react-stripe-checkout";
-import { updateProductStatus } from "../messages/services";
+import { createChatRoom, updateProductStatus } from "../messages/services";
+import { Button, Form, Modal } from "react-bootstrap";
 
 const ProductDetails = () => {
   const location = useLocation();
@@ -27,9 +28,12 @@ const ProductDetails = () => {
   const [toggleReviewAdded, setToggleReviewAdded] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
-  const [isProfileRatingModalOpen, setIsProfileRatingModalOpen] = useState(false);
+  const [isProfileRatingModalOpen, setIsProfileRatingModalOpen] =
+    useState(false);
   const [rating, setRating] = useState(0);
   const [profileRating, setProfileRating] = useState(0);
+  const [showMsg, setShowMsg] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     // Fetch product details and wishlist information
@@ -79,7 +83,9 @@ const ProductDetails = () => {
       .then((data) => {
         setToggleReviewAdded(!toggleReviewAdded);
       })
-      .catch((error) => console.error("Error submitting product rating:", error));
+      .catch((error) =>
+        console.error("Error submitting product rating:", error)
+      );
   };
 
   // Handle rating submission
@@ -197,6 +203,27 @@ const ProductDetails = () => {
     await updateProductStatus(productId, "Sold Out");
     navigate("/success");
   };
+  const handleChat = (product) => {
+    setShowMsg(true);
+    setProduct(product);
+  };
+
+  const onMsgSent = (e) => {
+    e.preventDefault();
+    createChatRoom(product.owner._id, message)
+      .then((res) => {
+        navigate(`/messages/${res.messageId}`);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleMsgChange = (e) => {
+    e.preventDefault();
+    setMessage(e.target.value);
+  };
+
+  const handleClose = () => setShowMsg(false);
+
   return (
     <div className="product-details-container">
       <div className="product-details">
@@ -241,16 +268,30 @@ const ProductDetails = () => {
               Rating: {averageRating.toFixed(2)}
             </div>
           </div>
-          
+
           <ImageGallery images={product.images} />
         </div>
         <div className="owner-info">
-          <div><strong>{`Seller: ${product.owner.firstName} ${product.owner.lastName}`}</strong></div>
-          <button>Chat with Seller</button>
+          <div>
+            <strong>{`Seller: ${product.owner.firstName} ${product.owner.lastName}`}</strong>
+          </div>
+          {!!user && product.owner._id !== user._id && (
+            <Button
+              size="sm"
+              className="chat_seller"
+              onClick={() => handleChat(product)}
+            >
+              Chat With Seller
+            </Button>
+          )}
           <button onClick={() => setIsProfileRatingModalOpen(true)}>
-              Rate This Seller
-            </button>
-          <button onClick={() => navigate(`/user/profile/${product.owner._id}`)}>Visit Seller's Profile</button>
+            Rate This Seller
+          </button>
+          <button
+            onClick={() => navigate(`/user/profile/${product.owner._id}`)}
+          >
+            Visit Seller's Profile
+          </button>
 
           <div className="product-rating-button">
             <button onClick={() => setIsReviewModalOpen(true)}>
@@ -260,7 +301,6 @@ const ProductDetails = () => {
               Rate This Product
             </button>
           </div>
-          
         </div>
       </div>
 
@@ -293,6 +333,37 @@ const ProductDetails = () => {
         setRating={setProfileRating}
         setIsRatingModalOpen={setIsProfileRatingModalOpen}
       />
+
+      <Modal show={showMsg} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Message</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group>
+              <Form.Control
+                as="textarea"
+                className="cnts-btn"
+                name="textarea"
+                onChange={handleMsgChange}
+                rows={3}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="dark" className="cnts-btn" onClick={onMsgSent}>
+            Send
+          </Button>
+          <Button
+            variant="secondary"
+            className="cnts-btn"
+            onClick={handleClose}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
