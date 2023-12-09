@@ -261,7 +261,8 @@ const ProductDetails = () => {
             <h3 className="product-price">${product.price}</h3>
           </div>
           <p className="product-description">{product.description}</p>
-          {product.status !== "Sold Out" && (
+          
+          {product.status !== "Sold Out" && user.isPremium === true? (
             <StripeCheckout
               label="Buy this online"
               name="Product purchase"
@@ -273,6 +274,8 @@ const ProductDetails = () => {
               token={onToken}
               stripeKey={publishableKey}
             ></StripeCheckout>
+          ) : (
+            <button disabled>Buy this online</button>
           )}
 
           <button className="add-to-cart" onClick={() => handleCart()}>

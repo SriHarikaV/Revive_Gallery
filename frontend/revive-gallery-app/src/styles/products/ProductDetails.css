@@ -209,6 +209,18 @@
   font-weight: bold;
 }
 
+/* Style for disabled "Buy this online" button */
+button[disabled] {
+  background-color: #b0b0b0; /* Change to your preferred color for disabled state */
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
+/* Style for enabled "Buy this online" button */
+button[disabled]:hover {
+  background-color: #b0b0b0; /* Change to your preferred color for disabled state on hover */
+}
+
 
 
 
