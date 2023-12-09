@@ -39,6 +39,7 @@ const UserRatingModal = ({ isOpen, onSubmit, rating, setRating, setIsRatingModal
           {/* Example: */}
           {[1, 2, 3, 4, 5].map((star) => (
             <span
+              data-testid="star"
               key={star}
               className={`star ${rating >= star ? 'selected' : ''}`}
               onClick={() => setRating(star)}

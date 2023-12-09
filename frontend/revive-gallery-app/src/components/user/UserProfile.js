@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import UserProductsList from "./UserProductsList";
 import { useParams } from "react-router-dom";
 import "../../styles/user/UserProfile.css";
+import PremiumImg from "../../static/images/premium.png";
 import {
   calculateAverageProductsRating,
   calculateAverageReviewRating,
@@ -92,8 +93,30 @@ const UserProfile = () => {
           <h2>Seller's Profile</h2>
         </div>
         <div className="user-details">
-          <p className="user-name">
-            Name: {`${userProfile.firstName} ${userProfile.lastName}`}
+          <p
+            className="user-name"
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <span>
+              Name: {`${userProfile.firstName} ${userProfile.lastName}`}
+            </span>
+            {calculateTrustworthinessScore(
+              averageUserProfileRating,
+              averageProductsRating,
+              averageProductReviewRating
+            ) > 3 && (
+              <img
+                src={PremiumImg}
+                alt="Premium"
+                style={{
+                  height: 30,
+                  marginLeft: 4,
+                }}
+              />
+            )}
           </p>
           <p className="user-email">Email: {userProfile.email}</p>
           <p className="user-rating">

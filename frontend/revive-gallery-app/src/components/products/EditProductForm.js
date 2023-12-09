@@ -208,7 +208,7 @@ function EditProductForm({ productId }) {
             required
           >
             {categories.map((category) => (
-              <option value={category.name}>{category.name}</option>
+              <option key={category.name} value={category.name}>{category.name}</option>
             ))}
           </select>
         </div>
@@ -247,7 +247,6 @@ function EditProductForm({ productId }) {
             multiple // Enable multiple file selection
             onChange={handleImageChange}
             className="form-control"
-            // required
           />
         </div>
 
