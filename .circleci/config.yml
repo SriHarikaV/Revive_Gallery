@@ -36,15 +36,15 @@ workflows:
   build_and_deploy:
     jobs:
       - backend
-          # filters:
-          #     branches:
-          #       only: main
+          filters:
+              branches:
+                only: main
       - frontend:
           requires:
             - backend
-          # filters:
-          #   branches:
-          #     only: main
+          filters:
+            branches:
+              only: main
 
 
 
